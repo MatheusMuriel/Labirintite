@@ -26,11 +26,13 @@ TITULO_TELA = "Labirintite"
 CAMPO_VISAO = 100
 
 ## Outros ##
-VELOCIDADE_MOVIMENTO = 1
+# A velocidade de movimento é o tamnho do sprite
+# para o personagem não "Empacar" em meio bloco
+VELOCIDADE_MOVIMENTO = TAMANHO_SPRITE
 
 ## Deve ser um numero impar ##
-ALTURA_LABIRINTO = 51
-LARGURA_LABIRINTO = 51
+ALTURA_LABIRINTO = 31
+LARGURA_LABIRINTO = 31
 
 TILE_VAZIO = 0
 TILE_PREENCHIDO = 1
@@ -232,15 +234,19 @@ class LabirintiteGame(arcade.Window):
 
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
-
         if key == arcade.key.UP:
             self.player_sprite.change_y = VELOCIDADE_MOVIMENTO
+
         elif key == arcade.key.DOWN:
-            self.player_sprite.change_y = -VELOCIDADE_MOVIMENTO
+            self.player_sprite.change_y = -(VELOCIDADE_MOVIMENTO)
+
         elif key == arcade.key.LEFT:
-            self.player_sprite.change_x = -VELOCIDADE_MOVIMENTO
+            self.player_sprite.change_x = -(VELOCIDADE_MOVIMENTO)
+
         elif key == arcade.key.RIGHT:
             self.player_sprite.change_x = VELOCIDADE_MOVIMENTO
+
+
 
     def on_key_release(self, key, modifiers):
         """Called when the user releases a key. """
@@ -297,6 +303,7 @@ class LabirintiteGame(arcade.Window):
 
         # Save the time it took to do this.
         self.processing_time = timeit.default_timer() - start_time
+        arcade.pause(0.05)
 
 
 def main():

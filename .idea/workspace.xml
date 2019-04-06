@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="75c103ea-11d4-4069-ad3f-948e4ab090c7" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -10,16 +11,79 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="214">
-              <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
+            <state relative-caret-position="185">
+              <caret line="305" column="25" selection-start-line="305" selection-start-column="25" selection-end-line="305" selection-end-column="25" />
               <folding>
-                <element signature="e#0#24#0" expanded="true" />
+                <element signature="e#0#8#2" />
+                <element signature="e#98#116#0" />
+                <element signature="e#539#992#0" />
+                <element signature="e#590#960#0" />
+                <element signature="e#657#960#0" />
+                <element signature="e#1667#1960#0" />
+                <element signature="e#1366#1896#0" />
+                <element signature="e#1632#1868#0" />
+                <element signature="e#2075#2628#0" />
+                <element signature="e#2659#5986#0" />
+                <element signature="e#3027#3552#0" />
+                <element signature="e#3027#3088#0" />
+                <element signature="e#3175#3552#0" />
+                <element signature="e#3228#3552#0" />
+                <element signature="e#3279#3552#0" />
+                <element signature="e#3579#4844#0" />
+                <element signature="e#3579#3643#0" />
+                <element signature="e#3940#4844#0" />
+                <element signature="e#4013#4844#0" />
+                <element signature="e#5160#5588#0" />
+                <element signature="e#5533#5588#0" />
+                <element signature="e#5785#5814#0" />
+                <element signature="e#6019#7233#0" />
+                <element signature="e#6019#6061#1" />
+                <element signature="e#7864#8122#0" />
+                <element signature="e#8144#8207#0" />
+                <element signature="e#8281#8307#0" />
+                <element signature="e#8522#8603#0" />
+                <element signature="e#8761#8844#0" />
+                <element signature="e#8996#9077#0" />
+                <element signature="e#9224#9311#0" />
+                <element signature="e#9690#9808#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file:///usr/lib/python3.7/site-packages/pyglet/clock.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="89">
+              <caret line="313" selection-start-line="313" selection-end-line="313" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file:///usr/lib/python3.7/site-packages/pyglet/app/base.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="80">
+              <caret line="186" selection-start-line="186" selection-end-line="186" />
             </state>
           </provider>
         </entry>
@@ -32,6 +96,13 @@
         <option value="Python Script" />
       </list>
     </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>images/grassCenter.png</find>
+      <find>images/character.png</find>
+      <find>&quot;Assets/Tiles/tile_0028.png&quot;</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -83,6 +154,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/Main.py" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -191,24 +263,25 @@
       <updated>1554337389127</updated>
       <workItem from="1554337395835" duration="2815000" />
       <workItem from="1554408389525" duration="1166000" />
-      <workItem from="1554501923349" duration="493000" />
+      <workItem from="1554501923349" duration="4893000" />
+      <workItem from="1554509640301" duration="787000" />
+      <workItem from="1554563416524" duration="12054000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4474000" />
+    <option name="totallyTimeSpent" value="21715000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-4" y="0" width="1374" height="727" extended-state="6" />
-    <editor active="true" />
+    <frame x="0" y="0" width="1366" height="723" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25833333" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26666668" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3512605" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.2487395" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.5058824" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -222,14 +295,14 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="SciView" order="3" />
-      <window_info anchor="right" id="Database" order="4" />
+      <window_info anchor="right" id="Database" order="4" weight="0.32954547" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Labirintite$Main.coverage" NAME="Main Coverage Results" MODIFIED="1554502171581" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Labirintite$Main.coverage" NAME="Main Coverage Results" MODIFIED="1554578416755" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Labirintite$Defunto.coverage" NAME="Defunto Coverage Results" MODIFIED="1554408749036" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="editorHistoryManager">
@@ -237,18 +310,102 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
           <caret line="21" column="22" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.7/random.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="274" selection-start-line="274" selection-end-line="274" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.7/ctypes/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="60" selection-start-line="60" selection-end-line="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.7/site-packages/pyglet/canvas/xlib.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="200" selection-start-line="200" selection-end-line="200" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.7/site-packages/pyglet/window/xlib/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="89">
+          <caret line="1269" selection-start-line="1269" selection-end-line="1269" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.7/site-packages/pyglet/event.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="89">
+          <caret line="369" selection-start-line="369" selection-end-line="369" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.7/site-packages/pyglet/window/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="89">
+          <caret line="1312" selection-start-line="1312" selection-end-line="1312" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.7/site-packages/pyglet/clock.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="89">
+          <caret line="313" selection-start-line="313" selection-end-line="313" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.7/site-packages/pyglet/app/base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="186" selection-start-line="186" selection-end-line="186" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="214">
-          <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
+        <state relative-caret-position="185">
+          <caret line="305" column="25" selection-start-line="305" selection-start-column="25" selection-end-line="305" selection-end-column="25" />
           <folding>
-            <element signature="e#0#24#0" expanded="true" />
+            <element signature="e#0#8#2" />
+            <element signature="e#98#116#0" />
+            <element signature="e#539#992#0" />
+            <element signature="e#590#960#0" />
+            <element signature="e#657#960#0" />
+            <element signature="e#1667#1960#0" />
+            <element signature="e#1366#1896#0" />
+            <element signature="e#1632#1868#0" />
+            <element signature="e#2075#2628#0" />
+            <element signature="e#2659#5986#0" />
+            <element signature="e#3027#3552#0" />
+            <element signature="e#3027#3088#0" />
+            <element signature="e#3175#3552#0" />
+            <element signature="e#3228#3552#0" />
+            <element signature="e#3279#3552#0" />
+            <element signature="e#3579#4844#0" />
+            <element signature="e#3579#3643#0" />
+            <element signature="e#3940#4844#0" />
+            <element signature="e#4013#4844#0" />
+            <element signature="e#5160#5588#0" />
+            <element signature="e#5533#5588#0" />
+            <element signature="e#5785#5814#0" />
+            <element signature="e#6019#7233#0" />
+            <element signature="e#6019#6061#1" />
+            <element signature="e#7864#8122#0" />
+            <element signature="e#8144#8207#0" />
+            <element signature="e#8281#8307#0" />
+            <element signature="e#8522#8603#0" />
+            <element signature="e#8761#8844#0" />
+            <element signature="e#8996#9077#0" />
+            <element signature="e#9224#9311#0" />
+            <element signature="e#9690#9808#0" />
           </folding>
         </state>
       </provider>
