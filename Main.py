@@ -14,16 +14,17 @@ import os
 TAMANHO_NATIVO_SPRITE = 128
 ESCALA_SPRITE = 0.25
 TAMANHO_SPRITE = TAMANHO_NATIVO_SPRITE * ESCALA_SPRITE
-MERGE_SPRITES = True
+MERGE_SPRITES = False
 
 ASSET_PAREDE = "bg.png"
 ASSET_JOGADOR = "hero.png"
+ASSET_SAIDA = "saida.png"
 
 ## Tela ##
 LARGURA_TELA = 800
 ALTURA_TELA = 690
 TITULO_TELA = "Labirintite"
-CAMPO_VISAO = 100
+CAMPO_VISAO = 200
 
 ## Outros ##
 # A velocidade de movimento é o tamnho do sprite
@@ -31,11 +32,12 @@ CAMPO_VISAO = 100
 VELOCIDADE_MOVIMENTO = TAMANHO_SPRITE
 
 ## Deve ser um numero impar ##
-ALTURA_LABIRINTO = 31
-LARGURA_LABIRINTO = 31
+ALTURA_LABIRINTO = 11
+LARGURA_LABIRINTO = 11
 
 TILE_VAZIO = 0
 TILE_PREENCHIDO = 1
+TILE_ESPECIAL = 2
 
 
 def criarGrade(largura, altura):
@@ -50,7 +52,6 @@ def criarGrade(largura, altura):
             else:
                 grade[linha].append(TILE_PREENCHIDO)
     return grade
-
 
 
 # Usando algoritmo Depth First
@@ -86,6 +87,11 @@ def criaLabirinto(lab_largura, lab_altura):
 
     andarilho_bebado(random.randrange(largura), random.randrange(altura))
 
+    def definir_ponto_final():
+        coordenada_maxima = len(lab) - 1
+        lab[coordenada_maxima - 1][coordenada_maxima] = TILE_ESPECIAL
+    definir_ponto_final()
+
     return lab
 
 
@@ -99,12 +105,12 @@ class LabirintiteGame(arcade.Window):
         os.chdir(file_path)
 
         # Sprite lists
-        self.player_list = None
+        self.jogador_list = None
         self.wall_list = None
 
         # Player info
         self.score = 0
-        self.player_sprite = None
+        self.jogador = None
 
         # Physics engine
         self.physics_engine = None
@@ -121,8 +127,9 @@ class LabirintiteGame(arcade.Window):
         """ Set up the game and initialize the variables. """
 
         # Sprite lists
-        self.player_list = arcade.SpriteList()
+        self.jogador_list = arcade.SpriteList()
         self.wall_list = arcade.SpriteList()
+        self.saida_list = arcade.SpriteList()
 
         self.score = 0
 
@@ -140,6 +147,11 @@ class LabirintiteGame(arcade.Window):
                         wall.center_x = column * TAMANHO_SPRITE + TAMANHO_SPRITE / 2
                         wall.center_y = row * TAMANHO_SPRITE + TAMANHO_SPRITE / 2
                         self.wall_list.append(wall)
+                    if maze[row][column] == 2:
+                        saida = arcade.Sprite(ASSET_SAIDA, ESCALA_SPRITE)
+                        saida.center_x = column * TAMANHO_SPRITE + TAMANHO_SPRITE / 2
+                        saida.center_y = row * TAMANHO_SPRITE + TAMANHO_SPRITE / 2
+                        self.saida_list.append(saida)
         else:
             # This uses new Arcade 1.3.1 features, that allow me to create a
             # larger sprite with a repeating texture. So if there are multiple
@@ -165,25 +177,26 @@ class LabirintiteGame(arcade.Window):
                     wall.width = TAMANHO_SPRITE * column_count
                     self.wall_list.append(wall)
 
-        # Set up the player
-        self.player_sprite = arcade.Sprite(ASSET_JOGADOR, ESCALA_SPRITE)
-        self.player_list.append(self.player_sprite)
+                    #saida = arcade.Sprite(ASSET_SAIDA, ESCALA_SPRITE, re)
 
-        # Randomly place the player. If we are in a wall, repeat until we aren't.
-        placed = False
-        while not placed:
+        # Definições do objeto jogador
+        self.jogador = arcade.Sprite(ASSET_JOGADOR, ESCALA_SPRITE)
+        self.jogador_list.append(self.jogador)
 
-            # Randomly position
-            self.player_sprite.center_x = random.randrange(LARGURA_LABIRINTO * TAMANHO_SPRITE)
-            self.player_sprite.center_y = random.randrange(ALTURA_LABIRINTO * TAMANHO_SPRITE)
+        def definir_ponto_inicio():
+            # Laço para definir o ponto de inicio do jogador
+            coordenada_maxima = int(LARGURA_LABIRINTO * TAMANHO_SPRITE)
+            for i in range(0, coordenada_maxima):
+                self.jogador.center_x = i
+                self.jogador.center_y = i
 
-            # Are we in a wall?
-            walls_hit = arcade.check_for_collision_with_list(self.player_sprite, self.wall_list)
-            if len(walls_hit) == 0:
-                # Not in a wall! Success!
-                placed = True
+                # Verifica se esta em uma parede
+                hits_parede = arcade.check_for_collision_with_list(self.jogador, self.wall_list)
+                if len(hits_parede) == 0:
+                    break
+        definir_ponto_inicio()
 
-        self.physics_engine = arcade.PhysicsEngineSimple(self.player_sprite, self.wall_list)
+        self.physics_engine = arcade.PhysicsEngineSimple(self.jogador, self.wall_list)
 
         # Set the background color
         arcade.set_background_color(arcade.color.AMAZON)
@@ -207,7 +220,8 @@ class LabirintiteGame(arcade.Window):
 
         # Draw all the sprites.
         self.wall_list.draw()
-        self.player_list.draw()
+        self.jogador_list.draw()
+        self.saida_list.draw()
 
         # Draw info on the screen
         sprite_count = len(self.wall_list)
@@ -235,26 +249,24 @@ class LabirintiteGame(arcade.Window):
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
         if key == arcade.key.UP:
-            self.player_sprite.change_y = VELOCIDADE_MOVIMENTO
+            self.jogador.change_y = VELOCIDADE_MOVIMENTO
 
         elif key == arcade.key.DOWN:
-            self.player_sprite.change_y = -(VELOCIDADE_MOVIMENTO)
+            self.jogador.change_y = -(VELOCIDADE_MOVIMENTO)
 
         elif key == arcade.key.LEFT:
-            self.player_sprite.change_x = -(VELOCIDADE_MOVIMENTO)
+            self.jogador.change_x = -(VELOCIDADE_MOVIMENTO)
 
         elif key == arcade.key.RIGHT:
-            self.player_sprite.change_x = VELOCIDADE_MOVIMENTO
-
-
+            self.jogador.change_x = VELOCIDADE_MOVIMENTO
 
     def on_key_release(self, key, modifiers):
         """Called when the user releases a key. """
 
         if key == arcade.key.UP or key == arcade.key.DOWN:
-            self.player_sprite.change_y = 0
+            self.jogador.change_y = 0
         elif key == arcade.key.LEFT or key == arcade.key.RIGHT:
-            self.player_sprite.change_x = 0
+            self.jogador.change_x = 0
 
     def update(self, delta_time):
         """ Movement and game logic """
@@ -273,26 +285,26 @@ class LabirintiteGame(arcade.Window):
 
         # Scroll left
         left_bndry = self.view_left + CAMPO_VISAO
-        if self.player_sprite.left <= left_bndry:
-            self.view_left -= left_bndry - self.player_sprite.left
+        if self.jogador.left <= left_bndry:
+            self.view_left -= left_bndry - self.jogador.left
             changed = True
 
         # Scroll right
         right_bndry = self.view_left + LARGURA_TELA - CAMPO_VISAO
-        if self.player_sprite.right >= right_bndry:
-            self.view_left += self.player_sprite.right - right_bndry
+        if self.jogador.right >= right_bndry:
+            self.view_left += self.jogador.right - right_bndry
             changed = True
 
         # Scroll up
         top_bndry = self.view_bottom + ALTURA_TELA - CAMPO_VISAO
-        if self.player_sprite.top >= top_bndry:
-            self.view_bottom += self.player_sprite.top - top_bndry
+        if self.jogador.top >= top_bndry:
+            self.view_bottom += self.jogador.top - top_bndry
             changed = True
 
         # Scroll down
         bottom_bndry = self.view_bottom + CAMPO_VISAO
-        if self.player_sprite.bottom <= bottom_bndry:
-            self.view_bottom -= bottom_bndry - self.player_sprite.bottom
+        if self.jogador.bottom <= bottom_bndry:
+            self.view_bottom -= bottom_bndry - self.jogador.bottom
             changed = True
 
         if changed:
