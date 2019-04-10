@@ -169,19 +169,22 @@ class LabirintiteGame(arcade.Window):
         self.player_sprite = arcade.Sprite(ASSET_JOGADOR, ESCALA_SPRITE)
         self.player_list.append(self.player_sprite)
 
-        # Randomly place the player. If we are in a wall, repeat until we aren't.
+        # Laço para definir o ponto de inicio do jogador
         placed = False
+        iterador = 0
         while not placed:
 
             # Randomly position
-            self.player_sprite.center_x = random.randrange(LARGURA_LABIRINTO * TAMANHO_SPRITE)
-            self.player_sprite.center_y = random.randrange(ALTURA_LABIRINTO * TAMANHO_SPRITE)
+            self.player_sprite.center_x = iterador
+            self.player_sprite.center_y = iterador
 
             # Are we in a wall?
             walls_hit = arcade.check_for_collision_with_list(self.player_sprite, self.wall_list)
             if len(walls_hit) == 0:
                 # Not in a wall! Success!
                 placed = True
+            else:
+                iterador += 1
 
         self.physics_engine = arcade.PhysicsEngineSimple(self.player_sprite, self.wall_list)
 
