@@ -14,16 +14,17 @@ import os
 TAMANHO_NATIVO_SPRITE = 128
 ESCALA_SPRITE = 0.25
 TAMANHO_SPRITE = TAMANHO_NATIVO_SPRITE * ESCALA_SPRITE
-MERGE_SPRITES = True
+MERGE_SPRITES = False
 
 ASSET_PAREDE = "bg.png"
 ASSET_JOGADOR = "hero.png"
+ASSET_SAIDA = "saida.png"
 
 ## Tela ##
 LARGURA_TELA = 800
 ALTURA_TELA = 690
 TITULO_TELA = "Labirintite"
-CAMPO_VISAO = 100
+CAMPO_VISAO = 200
 
 ## Outros ##
 # A velocidade de movimento é o tamnho do sprite
@@ -31,11 +32,12 @@ CAMPO_VISAO = 100
 VELOCIDADE_MOVIMENTO = TAMANHO_SPRITE
 
 ## Deve ser um numero impar ##
-ALTURA_LABIRINTO = 31
-LARGURA_LABIRINTO = 31
+ALTURA_LABIRINTO = 11
+LARGURA_LABIRINTO = 11
 
 TILE_VAZIO = 0
 TILE_PREENCHIDO = 1
+TILE_ESPECIAL = 2
 
 
 def criarGrade(largura, altura):
@@ -85,6 +87,11 @@ def criaLabirinto(lab_largura, lab_altura):
 
     andarilho_bebado(random.randrange(largura), random.randrange(altura))
 
+    def definir_ponto_final():
+        coordenada_maxima = len(lab) - 1
+        lab[coordenada_maxima - 1][coordenada_maxima] = TILE_ESPECIAL
+    definir_ponto_final()
+
     return lab
 
 
@@ -122,6 +129,7 @@ class LabirintiteGame(arcade.Window):
         # Sprite lists
         self.jogador_list = arcade.SpriteList()
         self.wall_list = arcade.SpriteList()
+        self.saida_list = arcade.SpriteList()
 
         self.score = 0
 
@@ -139,6 +147,11 @@ class LabirintiteGame(arcade.Window):
                         wall.center_x = column * TAMANHO_SPRITE + TAMANHO_SPRITE / 2
                         wall.center_y = row * TAMANHO_SPRITE + TAMANHO_SPRITE / 2
                         self.wall_list.append(wall)
+                    if maze[row][column] == 2:
+                        saida = arcade.Sprite(ASSET_SAIDA, ESCALA_SPRITE)
+                        saida.center_x = column * TAMANHO_SPRITE + TAMANHO_SPRITE / 2
+                        saida.center_y = row * TAMANHO_SPRITE + TAMANHO_SPRITE / 2
+                        self.saida_list.append(saida)
         else:
             # This uses new Arcade 1.3.1 features, that allow me to create a
             # larger sprite with a repeating texture. So if there are multiple
@@ -164,20 +177,24 @@ class LabirintiteGame(arcade.Window):
                     wall.width = TAMANHO_SPRITE * column_count
                     self.wall_list.append(wall)
 
+                    #saida = arcade.Sprite(ASSET_SAIDA, ESCALA_SPRITE, re)
+
         # Definições do objeto jogador
         self.jogador = arcade.Sprite(ASSET_JOGADOR, ESCALA_SPRITE)
         self.jogador_list.append(self.jogador)
 
-        # Laço para definir o ponto de inicio do jogador
-        coordenada_maxima = int(LARGURA_LABIRINTO * TAMANHO_SPRITE)
-        for i in range(0, coordenada_maxima):
-            self.jogador.center_x = i
-            self.jogador.center_y = i
+        def definir_ponto_inicio():
+            # Laço para definir o ponto de inicio do jogador
+            coordenada_maxima = int(LARGURA_LABIRINTO * TAMANHO_SPRITE)
+            for i in range(0, coordenada_maxima):
+                self.jogador.center_x = i
+                self.jogador.center_y = i
 
-            # Verifica se esta em uma parede
-            hits_parede = arcade.check_for_collision_with_list(self.jogador, self.wall_list)
-            if len(hits_parede) == 0:
-                break
+                # Verifica se esta em uma parede
+                hits_parede = arcade.check_for_collision_with_list(self.jogador, self.wall_list)
+                if len(hits_parede) == 0:
+                    break
+        definir_ponto_inicio()
 
         self.physics_engine = arcade.PhysicsEngineSimple(self.jogador, self.wall_list)
 
@@ -204,6 +221,7 @@ class LabirintiteGame(arcade.Window):
         # Draw all the sprites.
         self.wall_list.draw()
         self.jogador_list.draw()
+        self.saida_list.draw()
 
         # Draw info on the screen
         sprite_count = len(self.wall_list)
