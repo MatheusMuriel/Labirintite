@@ -24,7 +24,7 @@ ASSET_SAIDA = "saida.png"
 LARGURA_TELA = 800
 ALTURA_TELA = 690
 TITULO_TELA = "Labirintite"
-CAMPO_VISAO = 200
+CAMPO_VISAO = 400
 
 ## Outros ##
 # A velocidade de movimento é o tamnho do sprite
@@ -152,6 +152,10 @@ class LabirintiteGame(arcade.Window):
                         saida.center_x = column * TAMANHO_SPRITE + TAMANHO_SPRITE / 2
                         saida.center_y = row * TAMANHO_SPRITE + TAMANHO_SPRITE / 2
                         self.saida_list.append(saida)
+                        global SAIDA_X
+                        SAIDA_X = saida.center_x
+                        global SAIDA_Y
+                        SAIDA_Y = saida.center_y
         else:
             # This uses new Arcade 1.3.1 features, that allow me to create a
             # larger sprite with a repeating texture. So if there are multiple
@@ -276,6 +280,19 @@ class LabirintiteGame(arcade.Window):
         # Call update on all sprites (The sprites don't do much in this
         # example though.)
         self.physics_engine.update()
+
+        jogador_X = self.jogador.center_x
+        jogador_Y = self.jogador.center_y
+
+        print("Jogador X", jogador_X)
+        print("Jogador Y", jogador_Y)
+
+        print("Saida x", SAIDA_X)
+        print("Saida y", SAIDA_Y)
+        print("--")
+
+        if (jogador_X == SAIDA_X) and (jogador_Y == SAIDA_Y):
+            print("Achoooo")
 
         # --- Manage Scrolling ---
 
