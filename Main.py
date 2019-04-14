@@ -16,7 +16,7 @@ ESCALA_SPRITE = 0.25
 TAMANHO_SPRITE = TAMANHO_NATIVO_SPRITE * ESCALA_SPRITE
 MERGE_SPRITES = False
 
-ASSET_PAREDE = "bg.png"
+ASSET_PAREDE = "wall_mid.png"
 ASSET_JOGADOR = "hero.png"
 ASSET_SAIDA = "saida.png"
 
@@ -35,11 +35,19 @@ VELOCIDADE_MOVIMENTO = TAMANHO_SPRITE
 ALTURA_LABIRINTO = 21
 LARGURA_LABIRINTO = 21
 
+# Tiles do mapa do jogo
 TILE_VAZIO = 0
-TILE_PREENCHIDO = 1
-TILE_ESPECIAL = 2
+# Parede externa
+TILE_EXT_MID = 1
+TILE_EXT_CNT_INF_E = 2
+TILE_EXT_CNT_INF_D = 3
+TILE_EXT_CNT_SUP_E = 4
+TILE_EXT_CNT_SUP_D = 5
+# Parede interna
+TILE_PREENCHIDO = 123
+TILE_SAIDA = 99
 
-
+# Faz uma "matriz" usando uma lista de lista
 def criarGrade(largura, altura):
     grade = []
     for linha in range(altura):
@@ -89,7 +97,7 @@ def criaLabirinto(lab_largura, lab_altura):
 
     def definir_ponto_final():
         coordenada_maxima = len(lab) - 1
-        lab[coordenada_maxima - 1][coordenada_maxima] = TILE_ESPECIAL
+        lab[coordenada_maxima - 1][coordenada_maxima] = TILE_SAIDA
     definir_ponto_final()
 
     return lab
@@ -133,8 +141,19 @@ class LabirintiteGame(arcade.Window):
 
         self.score = 0
 
-        # Create the maze
-        maze = criaLabirinto(LARGURA_LABIRINTO, ALTURA_LABIRINTO)
+        # Cria o labirinto
+        labirinto = criaLabirinto(LARGURA_LABIRINTO, ALTURA_LABIRINTO)
+
+        def preenchedor(asset, asset_list, issaida=False):
+            bit = arcade.Sprite(asset, ESCALA_SPRITE)
+            bit.center_x = column * TAMANHO_SPRITE + TAMANHO_SPRITE / 2
+            bit.center_y = row * TAMANHO_SPRITE + TAMANHO_SPRITE / 2
+            asset_list.append(bit)
+            if(issaida):
+                global SAIDA_X
+                SAIDA_X = bit.center_x
+                global SAIDA_Y
+                SAIDA_Y = bit.center_y
 
         # Create sprites based on 2D grid
         if not MERGE_SPRITES:
@@ -142,20 +161,11 @@ class LabirintiteGame(arcade.Window):
             # is a sprite.
             for row in range(ALTURA_LABIRINTO):
                 for column in range(LARGURA_LABIRINTO):
-                    if maze[row][column] == 1:
-                        wall = arcade.Sprite(ASSET_PAREDE, ESCALA_SPRITE)
-                        wall.center_x = column * TAMANHO_SPRITE + TAMANHO_SPRITE / 2
-                        wall.center_y = row * TAMANHO_SPRITE + TAMANHO_SPRITE / 2
-                        self.wall_list.append(wall)
-                    if maze[row][column] == 2:
-                        saida = arcade.Sprite(ASSET_SAIDA, ESCALA_SPRITE)
-                        saida.center_x = column * TAMANHO_SPRITE + TAMANHO_SPRITE / 2
-                        saida.center_y = row * TAMANHO_SPRITE + TAMANHO_SPRITE / 2
-                        self.saida_list.append(saida)
-                        global SAIDA_X
-                        SAIDA_X = saida.center_x
-                        global SAIDA_Y
-                        SAIDA_Y = saida.center_y
+                    if labirinto[row][column] == TILE_PREENCHIDO:
+                        preenchedor(ASSET_PAREDE, self.wall_list)
+
+                    if labirinto[row][column] == TILE_SAIDA:
+                        preenchedor(ASSET_SAIDA, self.saida_list, True)
         else:
             # This uses new Arcade 1.3.1 features, that allow me to create a
             # larger sprite with a repeating texture. So if there are multiple
@@ -163,11 +173,11 @@ class LabirintiteGame(arcade.Window):
             # repeating texture for each cell. This reduces our sprite count.
             for row in range(ALTURA_LABIRINTO):
                 column = 0
-                while column < len(maze):
-                    while column < len(maze) and maze[row][column] == 0:
+                while column < len(labirinto):
+                    while column < len(labirinto) and labirinto[row][column] == 0:
                         column += 1
                     start_column = column
-                    while column < len(maze) and maze[row][column] == 1:
+                    while column < len(labirinto) and labirinto[row][column] == 1:
                         column += 1
                     end_column = column - 1
 
