@@ -24,7 +24,7 @@ ASSET_SAIDA = "saida.png"
 LARGURA_TELA = 800
 ALTURA_TELA = 690
 TITULO_TELA = "Labirintite"
-CAMPO_VISAO = 400
+CAMPO_VISAO = 10
 
 ## Outros ##
 # A velocidade de movimento é o tamnho do sprite
@@ -32,8 +32,8 @@ CAMPO_VISAO = 400
 VELOCIDADE_MOVIMENTO = TAMANHO_SPRITE
 
 ## Deve ser um numero impar ##
-ALTURA_LABIRINTO = 11
-LARGURA_LABIRINTO = 11
+ALTURA_LABIRINTO = 21
+LARGURA_LABIRINTO = 21
 
 TILE_VAZIO = 0
 TILE_PREENCHIDO = 1
