@@ -2,7 +2,7 @@
 Projeto de Inteligencia Artificial
 
 """
-
+import copy
 import random
 import arcade
 import timeit
@@ -16,9 +16,10 @@ ESCALA_SPRITE = 0.25
 TAMANHO_SPRITE = TAMANHO_NATIVO_SPRITE * ESCALA_SPRITE
 MERGE_SPRITES = False
 
-ASSET_PAREDE = "wall_mid.png"
+ASSET_PAREDE = "bg.png"
 ASSET_JOGADOR = "hero.png"
 ASSET_SAIDA = "saida.png"
+ASSET_EXT_MID = "wall_mid.png"
 
 ## Tela ##
 LARGURA_TELA = 800
@@ -32,8 +33,8 @@ CAMPO_VISAO = 10
 VELOCIDADE_MOVIMENTO = TAMANHO_SPRITE
 
 ## Deve ser um numero impar ##
-ALTURA_LABIRINTO = 21
-LARGURA_LABIRINTO = 21
+ALTURA_LABIRINTO = 11
+LARGURA_LABIRINTO = 11
 
 # Tiles do mapa do jogo
 TILE_VAZIO = 0
@@ -55,10 +56,20 @@ def criarGrade(largura, altura):
         for coluna in range(largura):
             if ((coluna % 2) == 1) and ((linha % 2) == 1):
                 grade[linha].append(TILE_VAZIO)
-            elif (coluna == 0) or (linha == 0) or (coluna == largura - 1) or (linha == altura - 1):
+            elif (linha == 0) or (linha.__index__() == (altura-1)):
+                # Condição verdadeira se for a ultima ou a primeira linha
+                grade[linha].append(TILE_EXT_MID)
+            elif (coluna == 0) or (coluna == largura - 1) or (linha == altura - 1):
                 grade[linha].append(TILE_PREENCHIDO)
             else:
                 grade[linha].append(TILE_PREENCHIDO)
+    # ult = copy.copy(grade[len(grade)-1])
+    # ult = [TILE_EXT_MID for _ in ult]
+    # gradeaux = []
+    # gradeaux.append(ult)
+    # gradeaux.append(x for x in grade)
+
+
     return grade
 
 
@@ -161,11 +172,13 @@ class LabirintiteGame(arcade.Window):
             # is a sprite.
             for row in range(ALTURA_LABIRINTO):
                 for column in range(LARGURA_LABIRINTO):
-                    if labirinto[row][column] == TILE_PREENCHIDO:
+                    localizacao = labirinto[row][column]
+                    if localizacao == TILE_PREENCHIDO:
                         preenchedor(ASSET_PAREDE, self.wall_list)
-
-                    if labirinto[row][column] == TILE_SAIDA:
+                    if localizacao == TILE_SAIDA:
                         preenchedor(ASSET_SAIDA, self.saida_list, True)
+                    if localizacao == TILE_EXT_MID:
+                        preenchedor(ASSET_EXT_MID, self.wall_list)
         else:
             # This uses new Arcade 1.3.1 features, that allow me to create a
             # larger sprite with a repeating texture. So if there are multiple
