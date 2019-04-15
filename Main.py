@@ -17,7 +17,7 @@ TAMANHO_SPRITE = TAMANHO_NATIVO_SPRITE * ESCALA_SPRITE
 MERGE_SPRITES = False
 
 ASSET_PAREDE = "bg.png"
-ASSET_JOGADOR = "hero.png"
+ASSET_JOGADOR = "tite/sideD.png"
 ASSET_SAIDA = "saida.png"
 ASSET_EXT_MID = "wall_mid.png"
 ASSET_EXT_LAT_MID_D = "wall_side_mid_left.png"
@@ -244,6 +244,10 @@ class LabirintiteGame(arcade.Window):
 
         # Definições do objeto jogador
         self.jogador = arcade.Sprite(ASSET_JOGADOR, ESCALA_SPRITE)
+        self.jogador.append_texture(arcade.load_texture("tite/up.png", scale=ESCALA_SPRITE))
+        self.jogador.append_texture(arcade.load_texture("tite/down.png", scale=ESCALA_SPRITE))
+        self.jogador.append_texture(arcade.load_texture("tite/sideE.png", scale=ESCALA_SPRITE))
+        self.jogador.append_texture(arcade.load_texture("tite/sideD.png", scale=ESCALA_SPRITE))
         self.jogador_list.append(self.jogador)
 
         def definir_ponto_inicio():
@@ -314,15 +318,19 @@ class LabirintiteGame(arcade.Window):
         """Called whenever a key is pressed. """
         if key == arcade.key.UP:
             self.jogador.change_y = VELOCIDADE_MOVIMENTO
+            self.jogador.set_texture(1)
 
         elif key == arcade.key.DOWN:
             self.jogador.change_y = -(VELOCIDADE_MOVIMENTO)
+            self.jogador.set_texture(2)
 
         elif key == arcade.key.LEFT:
             self.jogador.change_x = -(VELOCIDADE_MOVIMENTO)
+            self.jogador.set_texture(3)
 
         elif key == arcade.key.RIGHT:
             self.jogador.change_x = VELOCIDADE_MOVIMENTO
+            self.jogador.set_texture(4)
 
     def on_key_release(self, key, modifiers):
         """Called when the user releases a key. """
