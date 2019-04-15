@@ -20,6 +20,11 @@ ASSET_PAREDE = "bg.png"
 ASSET_JOGADOR = "hero.png"
 ASSET_SAIDA = "saida.png"
 ASSET_EXT_MID = "wall_mid.png"
+ASSET_EXT_LAT_MID_D = "wall_side_mid_left.png"
+ASSET_EXT_LAT_MID_E = "wall_side_mid_right.png"
+ASSET_EXT_LAT_INF_E = "wall_side_top_left.png"
+ASSET_EXT_LAT_INF_D = "wall_side_top_right.png"
+
 
 ## Tela ##
 LARGURA_TELA = 800
@@ -40,10 +45,15 @@ LARGURA_LABIRINTO = 11
 TILE_VAZIO = 0
 # Parede externa
 TILE_EXT_MID = 1
-TILE_EXT_CNT_INF_E = 2
-TILE_EXT_CNT_INF_D = 3
-TILE_EXT_CNT_SUP_E = 4
-TILE_EXT_CNT_SUP_D = 5
+TILE_EXT_LAT_MID_D = 2
+TILE_EXT_LAT_MID_E = 3
+TILE_EXT_CNT_INF_E = 4
+TILE_EXT_CNT_INF_D = 5
+TILE_EXT_CNT_SUP_E = 6
+TILE_EXT_CNT_SUP_D = 7
+TILE_EXT_LAT_INF_E = 8
+TILE_EXT_LAT_INF_D = 9
+
 # Parede interna
 TILE_PREENCHIDO = 123
 TILE_SAIDA = 99
@@ -56,10 +66,28 @@ def criarGrade(largura, altura):
         for coluna in range(largura):
             if ((coluna % 2) == 1) and ((linha % 2) == 1):
                 grade[linha].append(TILE_VAZIO)
-            elif (linha == 0) or (linha.__index__() == (altura-1)):
-                # Condição verdadeira se for a ultima ou a primeira linha
-                grade[linha].append(TILE_EXT_MID)
-            elif (coluna == 0) or (coluna == largura - 1) or (linha == altura - 1):
+            elif (coluna == 0 ):
+                # Condição verdadeira se for a primeira coluna
+                if linha == 0:
+                    grade[linha].append(TILE_EXT_LAT_INF_E)
+                else:
+                    grade[linha].append(TILE_EXT_LAT_MID_D)
+            elif (coluna.__index__() == (largura - 1)):
+                # Condição verdadeira se for a ultima coluna
+                if linha == 0:
+                    grade[linha].append(TILE_EXT_LAT_INF_D)
+                else:
+                    grade[linha].append(TILE_EXT_LAT_MID_E)
+            elif (linha == 0):
+                # Condição verdadeira se for a primeira linha
+                if len(grade[linha]) > 0:
+                    grade[linha].append(TILE_EXT_MID)
+            elif (linha.__index__() == (altura-1)):
+                # Ultima linha
+                if len(grade[linha]) > 0:
+                    grade[linha].append(TILE_EXT_MID)
+
+            elif (coluna == largura - 1) or (linha == altura - 1):
                 grade[linha].append(TILE_PREENCHIDO)
             else:
                 grade[linha].append(TILE_PREENCHIDO)
@@ -179,6 +207,14 @@ class LabirintiteGame(arcade.Window):
                         preenchedor(ASSET_SAIDA, self.saida_list, True)
                     if localizacao == TILE_EXT_MID:
                         preenchedor(ASSET_EXT_MID, self.wall_list)
+                    if localizacao == TILE_EXT_LAT_MID_D:
+                        preenchedor(ASSET_EXT_LAT_MID_D, self.wall_list)
+                    if localizacao == TILE_EXT_LAT_MID_E:
+                        preenchedor(ASSET_EXT_LAT_MID_E, self.wall_list)
+                    if localizacao == TILE_EXT_LAT_INF_E:
+                        preenchedor(ASSET_EXT_LAT_INF_E, self.wall_list)
+                    if localizacao == TILE_EXT_LAT_INF_D:
+                        preenchedor(ASSET_EXT_LAT_INF_D, self.wall_list)
         else:
             # This uses new Arcade 1.3.1 features, that allow me to create a
             # larger sprite with a repeating texture. So if there are multiple
@@ -222,11 +258,12 @@ class LabirintiteGame(arcade.Window):
                 if len(hits_parede) == 0:
                     break
         definir_ponto_inicio()
-
+        self.color = arcade.color
         self.physics_engine = arcade.PhysicsEngineSimple(self.jogador, self.wall_list)
 
         # Set the background color
-        arcade.set_background_color(arcade.color.AMAZON)
+        #cor_fundo = self.color(34,34,34,255)
+        arcade.set_background_color((34,34,34,255))
 
         # Set the viewport boundaries
         # These numbers set where we have 'scrolled' to.
