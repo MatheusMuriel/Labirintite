@@ -4,6 +4,8 @@ Projeto de Inteligencia Artificial
 """
 import copy
 import random
+from turtledemo.chaos import plot
+
 import arcade
 import timeit
 import os
@@ -51,6 +53,7 @@ LARGURA_LABIRINTO = 21
 
 # Tiles do mapa do jogo
 TILE_CHAO = 0
+VIEWPORT_MARGIN = 40
 
 # Parede externa
 TILE_EXT_MID = 1
@@ -66,6 +69,7 @@ TILE_EXT_LAT_INF_D = 9
 # Parede interna
 TILE_PAREDE_INTERNA = 123
 TILE_SAIDA = 99
+
 
 # Faz uma "matriz" usando uma lista de lista
 def criarGrade(largura, altura):
@@ -145,19 +149,19 @@ def criaLabirinto(lab_largura, lab_altura):
 
 
 class LabirintiteGame(arcade.Window):
-
+    vencedor = False
+    tempo_final = 0
     def __init__(self, largura, altura, titulo):
         # Inicializador.
         super().__init__(largura, altura, titulo)
-
-        file_path = os.path.dirname(os.path.abspath(__file__))
-        os.chdir(file_path)
 
         # Sprite lists
         self.jogador_list = None
         self.parede_list = None
         self.saida_list = None
         self.chao_list = None
+        largura, altura = self.get_size()
+        self.set_viewport(0, largura, 0, altura)
 
         # Player info
         self.score = 0
@@ -171,6 +175,7 @@ class LabirintiteGame(arcade.Window):
         self.visao_esquerda = 0
 
         # Tempo de processamento
+        self.total_time = 0.0
         self.processing_time = 0
         self.tempo_render = 0
 
@@ -182,6 +187,7 @@ class LabirintiteGame(arcade.Window):
         self.saida_list = arcade.SpriteList()
         self.chao_list = arcade.SpriteList()
         self.score = 0
+        self.total_time = 0.0
 
         # Cria o labirinto
         labirinto = criaLabirinto(LARGURA_LABIRINTO, ALTURA_LABIRINTO)
@@ -324,9 +330,12 @@ class LabirintiteGame(arcade.Window):
         # Comando obrigatorio antes de começar a printar os graficos na tela
         arcade.start_render()
 
+        minutes = int(self.total_time)//60
+        seconds = int(self.total_time) % 60
+        output = f"Time: {minutes:02d}:{seconds:02d}"
+
         # Cronometro para conferir o tempo de renderezição.
         tempo_inicio_render = timeit.default_timer()
-
         # Printa todos os itens da lista de sprites.
         # A ordem deles faz diferença.
         self.chao_list.draw()
@@ -337,6 +346,7 @@ class LabirintiteGame(arcade.Window):
         # Draw info on the screen
         # Printa informações na tela
         sprite_count = len(self.parede_list)
+
 
         output = f"Numero de Sprites: {sprite_count}"
         arcade.draw_text(output,
@@ -355,6 +365,24 @@ class LabirintiteGame(arcade.Window):
                          self.visao_esquerda + 20,
                          ALTURA_TELA - 60 + self.visao_inferior,
                          arcade.color.WHITE, 16)
+
+        output = f"Tempo de jogo: {self.total_time:.2f}"
+        arcade.draw_text(output,
+                         self.visao_esquerda + 20,
+                         ALTURA_TELA - 80 + self.visao_inferior,
+                         arcade.color.WHITE, 16)
+
+        if self.vencedor == True:
+            output = f"Você ganhou, seu tempo foi de: {self.tempo_final:.2f}"
+            arcade.draw_text(output,
+                             self.visao_esquerda + 60,
+                             ALTURA_TELA // 2 - 20,
+                             arcade.color.RED, 32)
+            output = f"click para frente para sair:"
+            arcade.draw_text(output,
+                             self.visao_esquerda + 60,
+                             ALTURA_TELA // 2 - 60,
+                             arcade.color.RED, 32)
 
         self.tempo_render = timeit.default_timer() - tempo_inicio_render
 
@@ -397,15 +425,21 @@ class LabirintiteGame(arcade.Window):
         jogador_X = self.jogador.center_x
         jogador_Y = self.jogador.center_y
 
-        print("Jogador X", jogador_X)
+        '''print("Jogador X", jogador_X)
         print("Jogador Y", jogador_Y)
 
         print("Saida x", SAIDA_X)
         print("Saida y", SAIDA_Y)
-        print("--")
+        print("--")'''
 
-        if (jogador_X == SAIDA_X) and (jogador_Y == SAIDA_Y):
+        if jogador_X == SAIDA_X and jogador_Y == SAIDA_Y and self.vencedor == False:
+            self.vencedor = True
             print("Achoooo")
+            self.tempo_final = self.total_time
+            print("Seu tempo foi de: "'%6.2f' % self.tempo_final)
+
+        if jogador_X == SAIDA_X + 32 and jogador_Y == SAIDA_Y:
+            arcade.close_window()
 
         # --- Manage Scrolling ---
 
@@ -446,6 +480,7 @@ class LabirintiteGame(arcade.Window):
         # Save the time it took to do this.
         self.processing_time = timeit.default_timer() - start_time
         arcade.pause(0.05)
+        self.total_time += delta_time
 
 
 def main():
