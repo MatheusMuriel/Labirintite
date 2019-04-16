@@ -14,16 +14,24 @@ import os
 TAMANHO_NATIVO_SPRITE = 128
 ESCALA_SPRITE = 0.25
 TAMANHO_SPRITE = TAMANHO_NATIVO_SPRITE * ESCALA_SPRITE
-MERGE_SPRITES = False
 
-ASSET_PAREDE = "bg.png"
+ASSET_PAREDE = "cenario/paredeinterna.png"
+ASSET_CHAO = "cenario/bg.png"
 ASSET_JOGADOR = "tite/sideD.png"
 ASSET_SAIDA = "saida.png"
-ASSET_EXT_MID = "wall_mid.png"
-ASSET_EXT_LAT_MID_D = "wall_side_mid_left.png"
-ASSET_EXT_LAT_MID_E = "wall_side_mid_right.png"
-ASSET_EXT_LAT_INF_E = "wall_side_top_left.png"
-ASSET_EXT_LAT_INF_D = "wall_side_top_right.png"
+ASSET_EXT_MID = "cenario/wall_mid.png"
+ASSET_EXT_LAT_MID_D = "cenario/lateral_externo_esquerdo.png"
+ASSET_EXT_LAT_MID_E = "cenario/lateral_externo_direito.png"
+ASSET_EXT_LAT_INF_E = "cenario/wall_side_top_left.png"
+ASSET_EXT_LAT_INF_D = "cenario/wall_side_top_right.png"
+ASSET_INT_SUP = "cenario/quina3.png"
+ASSET_INT_CANTO = "cenario/wall_mid.png"
+ASSET_INT_CANTO_DIR = "cenario/internacantodireito.png"
+ASSET_INT_CANTO_ESQ = "cenario/internacantoesquerdo.png"
+ASSET_QUINA1 = "cenario/quina1.png"
+ASSET_QUINA1esp = "cenario/quina1ESP.png"
+ASSET_QUINA2 = "cenario/quina2.png"
+ASSET_QUINA2ESP = "cenario/quina2esp.png"
 
 
 ## Tela ##
@@ -37,12 +45,13 @@ CAMPO_VISAO = 10
 # para o personagem não "Empacar" em meio bloco
 VELOCIDADE_MOVIMENTO = TAMANHO_SPRITE
 
-## Deve ser um numero impar ##
+# Deve ser um numero impar.
 ALTURA_LABIRINTO = 11
 LARGURA_LABIRINTO = 11
 
 # Tiles do mapa do jogo
-TILE_VAZIO = 0
+TILE_CHAO = 0
+
 # Parede externa
 TILE_EXT_MID = 1
 TILE_EXT_LAT_MID_D = 2
@@ -55,7 +64,7 @@ TILE_EXT_LAT_INF_E = 8
 TILE_EXT_LAT_INF_D = 9
 
 # Parede interna
-TILE_PREENCHIDO = 123
+TILE_PAREDE_INTERNA = 123
 TILE_SAIDA = 99
 
 # Faz uma "matriz" usando uma lista de lista
@@ -65,7 +74,7 @@ def criarGrade(largura, altura):
         grade.append([])
         for coluna in range(largura):
             if ((coluna % 2) == 1) and ((linha % 2) == 1):
-                grade[linha].append(TILE_VAZIO)
+                grade[linha].append(TILE_CHAO)
             elif (coluna == 0 ):
                 # Condição verdadeira se for a primeira coluna
                 if linha == 0:
@@ -88,18 +97,11 @@ def criarGrade(largura, altura):
                     grade[linha].append(TILE_EXT_MID)
 
             elif (coluna == largura - 1) or (linha == altura - 1):
-                grade[linha].append(TILE_PREENCHIDO)
+                grade[linha].append(TILE_PAREDE_INTERNA)
             else:
-                grade[linha].append(TILE_PREENCHIDO)
-    # ult = copy.copy(grade[len(grade)-1])
-    # ult = [TILE_EXT_MID for _ in ult]
-    # gradeaux = []
-    # gradeaux.append(ult)
-    # gradeaux.append(x for x in grade)
-
+                grade[linha].append(TILE_PAREDE_INTERNA)
 
     return grade
-
 
 # Usando algoritmo Depth First
 def criaLabirinto(lab_largura, lab_altura):
@@ -126,9 +128,9 @@ def criaLabirinto(lab_largura, lab_altura):
             if visita[yy][xx]:
                 continue
             if xx == x:
-                lab[max(y, yy) * 2][x * 2 + 1] = TILE_VAZIO
+                lab[max(y, yy) * 2][x * 2 + 1] = TILE_CHAO
             if yy == y:
-                lab[y * 2 + 1][max(x, xx) * 2] = TILE_VAZIO
+                lab[y * 2 + 1][max(x, xx) * 2] = TILE_CHAO
 
             andarilho_bebado(xx, yy)
 
@@ -145,7 +147,7 @@ def criaLabirinto(lab_largura, lab_altura):
 class LabirintiteGame(arcade.Window):
 
     def __init__(self, largura, altura, titulo):
-        # Inicializador
+        # Inicializador.
         super().__init__(largura, altura, titulo)
 
         file_path = os.path.dirname(os.path.abspath(__file__))
@@ -153,40 +155,45 @@ class LabirintiteGame(arcade.Window):
 
         # Sprite lists
         self.jogador_list = None
-        self.wall_list = None
+        self.parede_list = None
+        self.saida_list = None
+        self.chao_list = None
 
         # Player info
         self.score = 0
         self.jogador = None
 
-        # Physics engine
+        # Engine de Fisica
         self.physics_engine = None
 
-        # Used to scroll
-        self.view_bottom = 0
-        self.view_left = 0
+        # Usado para mover o campo de visao
+        self.visao_inferior = 0
+        self.visao_esquerda = 0
 
-        # Time to process
+        # Tempo de processamento
         self.processing_time = 0
-        self.draw_time = 0
+        self.tempo_render = 0
 
+    """ Setup e inicialização de variaveis. """
     def setup(self):
-        """ Set up the game and initialize the variables. """
-
-        # Sprite lists
+        # Lista de Sprites
         self.jogador_list = arcade.SpriteList()
-        self.wall_list = arcade.SpriteList()
+        self.parede_list = arcade.SpriteList()
         self.saida_list = arcade.SpriteList()
-
+        self.chao_list = arcade.SpriteList()
         self.score = 0
 
         # Cria o labirinto
         labirinto = criaLabirinto(LARGURA_LABIRINTO, ALTURA_LABIRINTO)
 
+        # Metodo responsavel por definir o sprite e suas cordenadas
+        # Grava tudo na lista de Sprites para dps o metodo on_draw renderizar
+        # OBS: Ultimo parametro opcional, é um tratamento especial para o ponto
+        # de saida do labirinto.
         def preenchedor(asset, asset_list, issaida=False):
             bit = arcade.Sprite(asset, ESCALA_SPRITE)
-            bit.center_x = column * TAMANHO_SPRITE + TAMANHO_SPRITE / 2
-            bit.center_y = row * TAMANHO_SPRITE + TAMANHO_SPRITE / 2
+            bit.center_x = coluna * TAMANHO_SPRITE + TAMANHO_SPRITE / 2
+            bit.center_y = linha * TAMANHO_SPRITE + TAMANHO_SPRITE / 2
             asset_list.append(bit)
             if(issaida):
                 global SAIDA_X
@@ -194,55 +201,87 @@ class LabirintiteGame(arcade.Window):
                 global SAIDA_Y
                 SAIDA_Y = bit.center_y
 
-        # Create sprites based on 2D grid
-        if not MERGE_SPRITES:
-            # This is the simple-to-understand method. Each grid location
-            # is a sprite.
-            for row in range(ALTURA_LABIRINTO):
-                for column in range(LARGURA_LABIRINTO):
-                    localizacao = labirinto[row][column]
-                    if localizacao == TILE_PREENCHIDO:
-                        preenchedor(ASSET_PAREDE, self.wall_list)
-                    if localizacao == TILE_SAIDA:
-                        preenchedor(ASSET_SAIDA, self.saida_list, True)
-                    if localizacao == TILE_EXT_MID:
-                        preenchedor(ASSET_EXT_MID, self.wall_list)
-                    if localizacao == TILE_EXT_LAT_MID_D:
-                        preenchedor(ASSET_EXT_LAT_MID_D, self.wall_list)
-                    if localizacao == TILE_EXT_LAT_MID_E:
-                        preenchedor(ASSET_EXT_LAT_MID_E, self.wall_list)
-                    if localizacao == TILE_EXT_LAT_INF_E:
-                        preenchedor(ASSET_EXT_LAT_INF_E, self.wall_list)
-                    if localizacao == TILE_EXT_LAT_INF_D:
-                        preenchedor(ASSET_EXT_LAT_INF_D, self.wall_list)
-        else:
-            # This uses new Arcade 1.3.1 features, that allow me to create a
-            # larger sprite with a repeating texture. So if there are multiple
-            # cells in a row with a wall, we merge them into one sprite, with a
-            # repeating texture for each cell. This reduces our sprite count.
-            for row in range(ALTURA_LABIRINTO):
-                column = 0
-                while column < len(labirinto):
-                    while column < len(labirinto) and labirinto[row][column] == 0:
-                        column += 1
-                    start_column = column
-                    while column < len(labirinto) and labirinto[row][column] == 1:
-                        column += 1
-                    end_column = column - 1
+        # Define os Sprites com base no grid
+        # Usa tecnica de Tilemap
+        for linha in range(ALTURA_LABIRINTO):
+            for coluna in range(LARGURA_LABIRINTO):
+                localizacao = labirinto[linha][coluna]
+                lateralEsq = labirinto[linha][coluna - 1]
+                lateralDir = labirinto[linha][coluna + 1] if coluna < LARGURA_LABIRINTO-1 else -100
+                superior = labirinto[linha + 1][coluna] if linha < ALTURA_LABIRINTO-1 else -100
+                inferior = labirinto[linha - 1][coluna]
 
-                    column_count = end_column - start_column + 1
-                    column_mid = (start_column + end_column) / 2
+                if localizacao == TILE_CHAO:
+                    preenchedor(ASSET_CHAO, self.chao_list)
 
-                    wall = arcade.Sprite(ASSET_PAREDE, ESCALA_SPRITE,
-                                         repeat_count_x=column_count)
-                    wall.center_x = column_mid * TAMANHO_SPRITE + TAMANHO_SPRITE / 2
-                    wall.center_y = row * TAMANHO_SPRITE + TAMANHO_SPRITE / 2
-                    wall.width = TAMANHO_SPRITE * column_count
-                    self.wall_list.append(wall)
+                if localizacao == TILE_PAREDE_INTERNA:
+                    preenchedor(ASSET_CHAO, self.chao_list)
 
-                    #saida = arcade.Sprite(ASSET_SAIDA, ESCALA_SPRITE, re)
+                    if lateralEsq == TILE_EXT_LAT_MID_D:
+                        preenchedor(ASSET_EXT_MID, self.parede_list)
+
+                    elif lateralDir == TILE_EXT_LAT_MID_E and superior == TILE_CHAO and inferior == TILE_CHAO:
+                        preenchedor(ASSET_EXT_MID, self.parede_list)
+
+                    elif superior == TILE_CHAO and inferior == TILE_CHAO and lateralEsq == TILE_PAREDE_INTERNA and lateralDir == TILE_PAREDE_INTERNA:
+                        preenchedor(ASSET_EXT_MID, self.parede_list)
+
+                    elif superior == TILE_PAREDE_INTERNA and inferior == TILE_CHAO and lateralDir == TILE_PAREDE_INTERNA and lateralEsq == TILE_PAREDE_INTERNA:
+                        preenchedor(ASSET_INT_CANTO, self.parede_list)
+
+                    elif superior == TILE_CHAO and inferior == TILE_CHAO and lateralEsq == TILE_PAREDE_INTERNA and lateralDir == TILE_CHAO:
+                        preenchedor(ASSET_INT_CANTO_DIR, self.parede_list)
+
+                    elif superior == TILE_CHAO and inferior == TILE_CHAO and lateralEsq == TILE_CHAO and lateralDir == TILE_PAREDE_INTERNA:
+                        preenchedor(ASSET_INT_CANTO_ESQ, self.parede_list)
+
+                    elif superior == TILE_PAREDE_INTERNA and inferior == TILE_PAREDE_INTERNA and lateralEsq == TILE_CHAO and lateralDir == TILE_PAREDE_INTERNA:
+                        preenchedor(ASSET_QUINA1, self.parede_list)
+
+                    elif superior == TILE_PAREDE_INTERNA and inferior == TILE_PAREDE_INTERNA and lateralEsq == TILE_PAREDE_INTERNA and lateralDir == TILE_CHAO:
+                        preenchedor(ASSET_QUINA1esp, self.parede_list)
+
+                    elif superior == TILE_PAREDE_INTERNA and inferior == TILE_CHAO and lateralEsq == TILE_PAREDE_INTERNA and lateralDir == TILE_CHAO:
+                        preenchedor(ASSET_QUINA2, self.parede_list)
+
+                    elif superior == TILE_PAREDE_INTERNA and inferior == TILE_CHAO and lateralEsq == TILE_CHAO and lateralDir == TILE_PAREDE_INTERNA:
+                        preenchedor(ASSET_QUINA2ESP, self.parede_list)
+
+                    elif superior == TILE_CHAO and lateralDir == TILE_CHAO and inferior == TILE_PAREDE_INTERNA and lateralEsq == TILE_PAREDE_INTERNA:
+                        preenchedor(ASSET_QUINA1esp, self.parede_list)
+
+                    elif superior == TILE_CHAO and lateralDir == TILE_PAREDE_INTERNA and inferior == TILE_PAREDE_INTERNA and lateralEsq == TILE_CHAO:
+                        preenchedor(ASSET_QUINA1, self.parede_list)
+
+                    elif superior == TILE_CHAO and lateralDir == TILE_PAREDE_INTERNA and inferior == TILE_PAREDE_INTERNA and lateralEsq == TILE_PAREDE_INTERNA:
+                        preenchedor(ASSET_INT_SUP, self.parede_list)
+
+                    else:
+                        preenchedor(ASSET_PAREDE, self.parede_list)
+
+                if localizacao == TILE_SAIDA:
+                    preenchedor(ASSET_SAIDA, self.saida_list, True)
+
+                if localizacao == TILE_EXT_MID:
+                    if inferior == TILE_PAREDE_INTERNA:
+                        preenchedor(ASSET_INT_SUP, self.parede_list)
+                    else:
+                        preenchedor(ASSET_EXT_MID, self.parede_list)
+
+                if localizacao == TILE_EXT_LAT_MID_D:
+                    preenchedor(ASSET_EXT_LAT_MID_D, self.parede_list)
+
+                if localizacao == TILE_EXT_LAT_MID_E:
+                    preenchedor(ASSET_EXT_LAT_MID_E, self.parede_list)
+
+                if localizacao == TILE_EXT_LAT_INF_E:
+                    preenchedor(ASSET_EXT_LAT_INF_E, self.parede_list)
+
+                if localizacao == TILE_EXT_LAT_INF_D:
+                    preenchedor(ASSET_EXT_LAT_INF_D, self.parede_list)
 
         # Definições do objeto jogador
+        # Os append_texture carregam os sprites do jogador de frente, lado e costas
         self.jogador = arcade.Sprite(ASSET_JOGADOR, ESCALA_SPRITE)
         self.jogador.append_texture(arcade.load_texture("tite/up.png", scale=ESCALA_SPRITE))
         self.jogador.append_texture(arcade.load_texture("tite/down.png", scale=ESCALA_SPRITE))
@@ -250,90 +289,96 @@ class LabirintiteGame(arcade.Window):
         self.jogador.append_texture(arcade.load_texture("tite/sideD.png", scale=ESCALA_SPRITE))
         self.jogador_list.append(self.jogador)
 
+        # Metodo que define o ponto de inicio do jogador
+        # Ele define usando o ponto mais baixo do mapa (inferior esquerdo)
+        # em que não seja uma parede
         def definir_ponto_inicio():
-            # Laço para definir o ponto de inicio do jogador
             coordenada_maxima = int(LARGURA_LABIRINTO * TAMANHO_SPRITE)
+
             for i in range(0, coordenada_maxima):
                 self.jogador.center_x = i
                 self.jogador.center_y = i
 
                 # Verifica se esta em uma parede
-                hits_parede = arcade.check_for_collision_with_list(self.jogador, self.wall_list)
+                hits_parede = arcade.check_for_collision_with_list(self.jogador, self.parede_list)
                 if len(hits_parede) == 0:
                     break
+
         definir_ponto_inicio()
-        self.color = arcade.color
-        self.physics_engine = arcade.PhysicsEngineSimple(self.jogador, self.wall_list)
 
-        # Set the background color
-        #cor_fundo = self.color(34,34,34,255)
-        arcade.set_background_color((34,34,34,255))
+        # Define a fisica para o jogo.
+        self.physics_engine = arcade.PhysicsEngineSimple(self.jogador, self.parede_list)
 
-        # Set the viewport boundaries
-        # These numbers set where we have 'scrolled' to.
-        self.view_left = 0
-        self.view_bottom = 0
-        print(f"Total wall blocks: {len(self.wall_list)}")
+        # Define a cor de fundo.
+        arcade.set_background_color((34, 34, 34, 255))
 
+        # Define os limites do campo de visao
+        self.visao_esquerda = 0
+        self.visao_inferior = 0
+
+        print(f"Total wall blocks: {len(self.parede_list)}")
+
+    """Metodo que renderiza a tela. """
     def on_draw(self):
-        """
-        Render the screen.
-        """
 
-        # This command has to happen before we start drawing
+        # Comando obrigatorio antes de começar a printar os graficos na tela
         arcade.start_render()
 
-        # Start timing how long this takes
-        draw_start_time = timeit.default_timer()
+        # Cronometro para conferir o tempo de renderezição.
+        tempo_inicio_render = timeit.default_timer()
 
-        # Draw all the sprites.
-        self.wall_list.draw()
-        self.jogador_list.draw()
+        # Printa todos os itens da lista de sprites.
+        # A ordem deles faz diferença.
+        self.chao_list.draw()
+        self.parede_list.draw()
         self.saida_list.draw()
+        self.jogador_list.draw()
 
         # Draw info on the screen
-        sprite_count = len(self.wall_list)
+        # Printa informações na tela
+        sprite_count = len(self.parede_list)
 
-        output = f"Sprite Count: {sprite_count}"
+        output = f"Numero de Sprites: {sprite_count}"
         arcade.draw_text(output,
-                         self.view_left + 20,
-                         ALTURA_LABIRINTO - 20 + self.view_bottom,
+                         self.visao_esquerda + 20,
+                         ALTURA_LABIRINTO - 20 + self.visao_inferior,
                          arcade.color.WHITE, 16)
 
-        output = f"Drawing time: {self.draw_time:.3f}"
+        output = f"Tempo de Renderização: {self.tempo_render:.3f}"
         arcade.draw_text(output,
-                         self.view_left + 20,
-                         ALTURA_TELA - 40 + self.view_bottom,
+                         self.visao_esquerda + 20,
+                         ALTURA_TELA - 40 + self.visao_inferior,
                          arcade.color.WHITE, 16)
 
-        output = f"Processing time: {self.processing_time:.3f}"
+        output = f"Tempo de processamento: {self.processing_time:.3f}"
         arcade.draw_text(output,
-                         self.view_left + 20,
-                         ALTURA_TELA - 60 + self.view_bottom,
+                         self.visao_esquerda + 20,
+                         ALTURA_TELA - 60 + self.visao_inferior,
                          arcade.color.WHITE, 16)
 
-        self.draw_time = timeit.default_timer() - draw_start_time
+        self.tempo_render = timeit.default_timer() - tempo_inicio_render
 
-    def on_key_press(self, key, modifiers):
-        """Called whenever a key is pressed. """
-        if key == arcade.key.UP:
+    """Metodo chamado quando qualquer tecla é pressionada. """
+    def on_key_press(self, tecla, modifiers):
+
+        if tecla == arcade.key.UP or tecla == arcade.key.W:
             self.jogador.change_y = VELOCIDADE_MOVIMENTO
             self.jogador.set_texture(1)
 
-        elif key == arcade.key.DOWN:
+        elif tecla == arcade.key.DOWN or tecla == arcade.key.S:
             self.jogador.change_y = -(VELOCIDADE_MOVIMENTO)
             self.jogador.set_texture(2)
 
-        elif key == arcade.key.LEFT:
+        elif tecla == arcade.key.LEFT or tecla == arcade.key.D:
             self.jogador.change_x = -(VELOCIDADE_MOVIMENTO)
             self.jogador.set_texture(3)
 
-        elif key == arcade.key.RIGHT:
+        elif tecla == arcade.key.RIGHT or tecla == arcade.key.A:
             self.jogador.change_x = VELOCIDADE_MOVIMENTO
             self.jogador.set_texture(4)
 
+    """Metodo chamado quando o usuario solta a tecla. """
     def on_key_release(self, key, modifiers):
-        """Called when the user releases a key. """
 
         if key == arcade.key.UP or key == arcade.key.DOWN:
             self.jogador.change_y = 0
@@ -369,34 +414,34 @@ class LabirintiteGame(arcade.Window):
         changed = False
 
         # Scroll left
-        left_bndry = self.view_left + CAMPO_VISAO
+        left_bndry = self.visao_esquerda + CAMPO_VISAO
         if self.jogador.left <= left_bndry:
-            self.view_left -= left_bndry - self.jogador.left
+            self.visao_esquerda -= left_bndry - self.jogador.left
             changed = True
 
         # Scroll right
-        right_bndry = self.view_left + LARGURA_TELA - CAMPO_VISAO
+        right_bndry = self.visao_esquerda + LARGURA_TELA - CAMPO_VISAO
         if self.jogador.right >= right_bndry:
-            self.view_left += self.jogador.right - right_bndry
+            self.visao_esquerda += self.jogador.right - right_bndry
             changed = True
 
         # Scroll up
-        top_bndry = self.view_bottom + ALTURA_TELA - CAMPO_VISAO
+        top_bndry = self.visao_inferior + ALTURA_TELA - CAMPO_VISAO
         if self.jogador.top >= top_bndry:
-            self.view_bottom += self.jogador.top - top_bndry
+            self.visao_inferior += self.jogador.top - top_bndry
             changed = True
 
         # Scroll down
-        bottom_bndry = self.view_bottom + CAMPO_VISAO
+        bottom_bndry = self.visao_inferior + CAMPO_VISAO
         if self.jogador.bottom <= bottom_bndry:
-            self.view_bottom -= bottom_bndry - self.jogador.bottom
+            self.visao_inferior -= bottom_bndry - self.jogador.bottom
             changed = True
 
         if changed:
-            arcade.set_viewport(self.view_left,
-                                LARGURA_TELA + self.view_left,
-                                self.view_bottom,
-                                LARGURA_TELA + self.view_bottom)
+            arcade.set_viewport(self.visao_esquerda,
+                                LARGURA_TELA + self.visao_esquerda,
+                                self.visao_inferior,
+                                LARGURA_TELA + self.visao_inferior)
 
         # Save the time it took to do this.
         self.processing_time = timeit.default_timer() - start_time

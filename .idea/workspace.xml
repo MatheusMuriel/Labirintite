@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="75c103ea-11d4-4069-ad3f-948e4ab090c7" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/cenario/chao.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hero.png" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -30,12 +33,50 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="94" column="14" lean-forward="true" selection-start-line="94" selection-start-column="14" selection-end-line="94" selection-end-column="14" />
+            <state relative-caret-position="225">
+              <caret line="27" column="19" lean-forward="true" selection-start-line="27" selection-start-column="19" selection-end-line="27" selection-end-column="19" />
               <folding>
                 <element signature="e#0#43#1" />
                 <element signature="e#98#117#0" />
+                <element signature="e#665#677#0" />
+                <element signature="e#1287#2807#0" />
+                <element signature="e#1549#1768#0" />
+                <element signature="e#1841#2058#0" />
+                <element signature="e#2106#2247#0" />
+                <element signature="e#2316#2426#0" />
+                <element signature="e#3824#3923#0" />
+                <element signature="e#4064#4612#0" />
+                <element signature="e#5012#5071#0" />
+                <element signature="e#5055#5437#0" />
+                <element signature="e#5314#5437#0" />
+                <element signature="e#5701#5737#0" />
+                <element signature="e#7831#7879#0" />
+                <element signature="e#8040#8450#0" />
+                <element signature="e#8799#10203#0" />
+                <element signature="e#10853#11447#0" />
+                <element signature="e#10397#10481#0" />
+                <element signature="e#11074#11161#0" />
+                <element signature="e#11156#11243#0" />
+                <element signature="e#11363#11447#0" />
+                <element signature="e#11034#11277#0" />
+                <element signature="e#11321#13241#0" />
+                <element signature="e#11407#11470#0" />
+                <element signature="e#11887#11913#0" />
+                <element signature="e#12119#12194#0" />
+                <element signature="e#12343#12420#0" />
+                <element signature="e#12561#12636#0" />
+                <element signature="e#12774#12855#0" />
+                <element signature="e#12889#13102#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file:///usr/lib/python3.7/codecs.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="80">
+              <caret line="309" selection-start-line="309" selection-end-line="309" />
             </state>
           </provider>
         </entry>
@@ -57,6 +98,8 @@
       <find>0</find>
       <find>1</find>
       <find>TILE_VAZIO</find>
+      <find>SAIDA_X</find>
+      <find>bac</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -93,7 +136,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -101,20 +143,32 @@
               <item name="Labirintite" type="b2602c69:ProjectViewProjectNode" />
               <item name="Labirintite" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="Labirintite" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Labirintite" type="462c0819:PsiDirectoryNode" />
+              <item name="cenario" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Labirintite" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Labirintite" type="462c0819:PsiDirectoryNode" />
+              <item name="tite" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Main.py" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/IntelliJ.Portuguese.Brazil.Dictionary-master/portuguese-brazil_without-accents.dic" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.ide.settings.spelling" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -205,6 +259,7 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" BundledDictionaries="0" Folders="4" Folder0="$USER_HOME$/Downloads/IntelliJ.Portuguese.Brazil.Dictionary-master" Folder1="$USER_HOME$/Downloads/IntelliJ.Portuguese.Brazil.Dictionary-master" Folder2="$USER_HOME$/Downloads/IntelliJ.Portuguese.Brazil.Dictionary-master" Folder3="$USER_HOME$/Downloads/IntelliJ.Portuguese.Brazil.Dictionary-master" CustomDictionaries="4" CustomDictionary0="$USER_HOME$/Downloads/IntelliJ.Portuguese.Brazil.Dictionary-master/portuguese-brazil.dic" CustomDictionary1="$USER_HOME$/Downloads/IntelliJ.Portuguese.Brazil.Dictionary-master/portuguese-brazil_technical-terms.dic" CustomDictionary2="$USER_HOME$/Downloads/IntelliJ.Portuguese.Brazil.Dictionary-master/portuguese-brazil_technical-terms_without-accents.dic" CustomDictionary3="$USER_HOME$/Downloads/IntelliJ.Portuguese.Brazil.Dictionary-master/portuguese-brazil_without-accents.dic" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="project-level" UseSingleDictionary="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -224,22 +279,23 @@
       <workItem from="1554987986320" duration="4365000" />
       <workItem from="1555111135417" duration="766000" />
       <workItem from="1555115846660" duration="319000" />
+      <workItem from="1555279143339" duration="46675000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="33531000" />
+    <option name="totallyTimeSpent" value="80206000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1366" height="723" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.28484848" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19318181" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32941177" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.2487395" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.2487395" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.5058824" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -261,7 +317,7 @@
     <option name="version" value="1" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Labirintite$Main.coverage" NAME="Main Coverage Results" MODIFIED="1555116019987" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Labirintite$Main.coverage" NAME="Main Coverage Results" MODIFIED="1555377042155" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Labirintite$Defunto.coverage" NAME="Defunto Coverage Results" MODIFIED="1554408749036" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="editorHistoryManager">
@@ -322,13 +378,66 @@
         </state>
       </provider>
     </entry>
+    <entry file="file:///usr/lib/python3.7/site-packages/arcade/sprite_list.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="368" selection-start-line="368" selection-end-line="368" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.7/timeit.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.7/codecs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="309" selection-start-line="309" selection-end-line="309" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="94" column="14" lean-forward="true" selection-start-line="94" selection-start-column="14" selection-end-line="94" selection-end-column="14" />
+        <state relative-caret-position="225">
+          <caret line="27" column="19" lean-forward="true" selection-start-line="27" selection-start-column="19" selection-end-line="27" selection-end-column="19" />
           <folding>
             <element signature="e#0#43#1" />
             <element signature="e#98#117#0" />
+            <element signature="e#665#677#0" />
+            <element signature="e#1287#2807#0" />
+            <element signature="e#1549#1768#0" />
+            <element signature="e#1841#2058#0" />
+            <element signature="e#2106#2247#0" />
+            <element signature="e#2316#2426#0" />
+            <element signature="e#3824#3923#0" />
+            <element signature="e#4064#4612#0" />
+            <element signature="e#5012#5071#0" />
+            <element signature="e#5055#5437#0" />
+            <element signature="e#5314#5437#0" />
+            <element signature="e#5701#5737#0" />
+            <element signature="e#7831#7879#0" />
+            <element signature="e#8040#8450#0" />
+            <element signature="e#8799#10203#0" />
+            <element signature="e#10853#11447#0" />
+            <element signature="e#10397#10481#0" />
+            <element signature="e#11074#11161#0" />
+            <element signature="e#11156#11243#0" />
+            <element signature="e#11363#11447#0" />
+            <element signature="e#11034#11277#0" />
+            <element signature="e#11321#13241#0" />
+            <element signature="e#11407#11470#0" />
+            <element signature="e#11887#11913#0" />
+            <element signature="e#12119#12194#0" />
+            <element signature="e#12343#12420#0" />
+            <element signature="e#12561#12636#0" />
+            <element signature="e#12774#12855#0" />
+            <element signature="e#12889#13102#0" />
           </folding>
         </state>
       </provider>
