@@ -4,8 +4,6 @@ Projeto de Inteligencia Artificial
 """
 import copy
 import random
-from turtledemo.chaos import plot
-
 import arcade
 import timeit
 import os
@@ -34,6 +32,7 @@ ASSET_QUINA1 = "cenario/quina1.png"
 ASSET_QUINA1esp = "cenario/quina1ESP.png"
 ASSET_QUINA2 = "cenario/quina2.png"
 ASSET_QUINA2ESP = "cenario/quina2esp.png"
+ASSET_CRUZAMENTO = "cenario/tempX.png"
 
 
 ## Tela ##
@@ -261,6 +260,9 @@ class LabirintiteGame(arcade.Window):
 
                     elif superior == TILE_CHAO and lateralDir == TILE_PAREDE_INTERNA and inferior == TILE_PAREDE_INTERNA and lateralEsq == TILE_PAREDE_INTERNA:
                         preenchedor(ASSET_INT_SUP, self.parede_list)
+
+                    elif superior == TILE_PAREDE_INTERNA and inferior == TILE_PAREDE_INTERNA and lateralEsq == TILE_PAREDE_INTERNA and lateralDir == TILE_PAREDE_INTERNA:
+                        preenchedor(ASSET_CRUZAMENTO, self.parede_list)
 
                     else:
                         preenchedor(ASSET_PAREDE, self.parede_list)
