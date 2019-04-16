@@ -18,7 +18,7 @@ TAMANHO_SPRITE = TAMANHO_NATIVO_SPRITE * ESCALA_SPRITE
 ASSET_PAREDE = "cenario/paredeinterna.png"
 ASSET_CHAO = "cenario/bg.png"
 ASSET_JOGADOR = "tite/sideD.png"
-ASSET_SAIDA = "saida.png"
+ASSET_SAIDA = "cenario/saida.png"
 ASSET_EXT_MID = "cenario/wall_mid.png"
 ASSET_EXT_LAT_MID_D = "cenario/lateral_externo_esquerdo.png"
 ASSET_EXT_LAT_MID_E = "cenario/lateral_externo_direito.png"
@@ -46,8 +46,8 @@ CAMPO_VISAO = 10
 VELOCIDADE_MOVIMENTO = TAMANHO_SPRITE
 
 # Deve ser um numero impar.
-ALTURA_LABIRINTO = 11
-LARGURA_LABIRINTO = 11
+ALTURA_LABIRINTO = 21
+LARGURA_LABIRINTO = 21
 
 # Tiles do mapa do jogo
 TILE_CHAO = 0
