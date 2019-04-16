@@ -32,7 +32,7 @@ ASSET_QUINA1 = "cenario/quina1.png"
 ASSET_QUINA1esp = "cenario/quina1ESP.png"
 ASSET_QUINA2 = "cenario/quina2.png"
 ASSET_QUINA2ESP = "cenario/quina2esp.png"
-ASSET_CRUZAMENTO = "cenario/tempX.png"
+ASSET_CRUZAMENTO = "cenario/cruzamento.png"
 
 
 ## Tela ##
