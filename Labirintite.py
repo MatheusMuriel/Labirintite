@@ -69,6 +69,9 @@ TILE_EXT_LAT_INF_D = 9
 TILE_PAREDE_INTERNA = 123
 TILE_SAIDA = 99
 
+SAIDA_X = 0
+SAIDA_Y = 0
+
 
 # Faz uma "matriz" usando uma lista de lista
 def criarGrade(largura, altura):
@@ -187,9 +190,19 @@ class LabirintiteGame(arcade.Window):
         id = len(lista_jogadores) + 1
         tipo = tipo_jogador
         score = 0
-        self.jogador = None
+
+
+        self.jogador = arcade.Sprite(ASSET_JOGADOR, ESCALA_SPRITE)
+        self.jogador.append_texture(arcade.load_texture("tite/up.png", scale=ESCALA_SPRITE))
+        self.jogador.append_texture(arcade.load_texture("tite/down.png", scale=ESCALA_SPRITE))
+        self.jogador.append_texture(arcade.load_texture("tite/sideE.png", scale=ESCALA_SPRITE))
+        self.jogador.append_texture(arcade.load_texture("tite/sideD.png", scale=ESCALA_SPRITE))
+
+
         jogador = self.jogador
+
         objeto_jogador = [jogador, id, tipo, score]
+        lista_jogadores.append(objeto_jogador)
 
         return objeto_jogador
 
@@ -439,63 +452,63 @@ class LabirintiteGame(arcade.Window):
         elif key == arcade.key.LEFT or key == arcade.key.RIGHT:
             self.jogador.change_x = 0
 
-    def update(self, delta_time):
-        """ Movement and game logic """
-
-        start_time = timeit.default_timer()
-
-        # Call update on all sprites (The sprites don't do much in this
-        # example though.)
-        self.physics_engine.update()
-
-        jogador_X = self.jogador.center_x
-        jogador_Y = self.jogador.center_y
-
-        self.verifica_fim(jogador_X, jogador_Y)
-
-        if jogador_X == SAIDA_X + 32 and jogador_Y == SAIDA_Y:
-            arcade.close_window()
-
-        # --- Manage Scrolling ---
-
-        # Track if we need to change the viewport
-
-        changed = False
-
-        # Scroll left
-        left_bndry = self.visao_esquerda + CAMPO_VISAO
-        if self.jogador.left <= left_bndry:
-            self.visao_esquerda -= left_bndry - self.jogador.left
-            changed = True
-
-        # Scroll right
-        right_bndry = self.visao_esquerda + LARGURA_TELA - CAMPO_VISAO
-        if self.jogador.right >= right_bndry:
-            self.visao_esquerda += self.jogador.right - right_bndry
-            changed = True
-
-        # Scroll up
-        top_bndry = self.visao_inferior + ALTURA_TELA - CAMPO_VISAO
-        if self.jogador.top >= top_bndry:
-            self.visao_inferior += self.jogador.top - top_bndry
-            changed = True
-
-        # Scroll down
-        bottom_bndry = self.visao_inferior + CAMPO_VISAO
-        if self.jogador.bottom <= bottom_bndry:
-            self.visao_inferior -= bottom_bndry - self.jogador.bottom
-            changed = True
-
-        if changed:
-            arcade.set_viewport(self.visao_esquerda,
-                                LARGURA_TELA + self.visao_esquerda,
-                                self.visao_inferior,
-                                LARGURA_TELA + self.visao_inferior)
-
-        # Save the time it took to do this.
-        self.processing_time = timeit.default_timer() - start_time
-        arcade.pause(0.05)
-        self.total_time += delta_time
+    # def update(self, delta_time):
+    #     """ Movement and game logic """
+    #
+    #     start_time = timeit.default_timer()
+    #
+    #     # Call update on all sprites (The sprites don't do much in this
+    #     # example though.)
+    #     self.physics_engine.update()
+    #
+    #     jogador_X = self.jogador.center_x
+    #     jogador_Y = self.jogador.center_y
+    #
+    #     self.verifica_fim(jogador_X, jogador_Y)
+    #
+    #     if jogador_X == SAIDA_X + 32 and jogador_Y == SAIDA_Y:
+    #         arcade.close_window()
+    #
+    #     # --- Manage Scrolling ---
+    #
+    #     # Track if we need to change the viewport
+    #
+    #     changed = False
+    #
+    #     # Scroll left
+    #     left_bndry = self.visao_esquerda + CAMPO_VISAO
+    #     if self.jogador.left <= left_bndry:
+    #         self.visao_esquerda -= left_bndry - self.jogador.left
+    #         changed = True
+    #
+    #     # Scroll right
+    #     right_bndry = self.visao_esquerda + LARGURA_TELA - CAMPO_VISAO
+    #     if self.jogador.right >= right_bndry:
+    #         self.visao_esquerda += self.jogador.right - right_bndry
+    #         changed = True
+    #
+    #     # Scroll up
+    #     top_bndry = self.visao_inferior + ALTURA_TELA - CAMPO_VISAO
+    #     if self.jogador.top >= top_bndry:
+    #         self.visao_inferior += self.jogador.top - top_bndry
+    #         changed = True
+    #
+    #     # Scroll down
+    #     bottom_bndry = self.visao_inferior + CAMPO_VISAO
+    #     if self.jogador.bottom <= bottom_bndry:
+    #         self.visao_inferior -= bottom_bndry - self.jogador.bottom
+    #         changed = True
+    #
+    #     if changed:
+    #         arcade.set_viewport(self.visao_esquerda,
+    #                             LARGURA_TELA + self.visao_esquerda,
+    #                             self.visao_inferior,
+    #                             LARGURA_TELA + self.visao_inferior)
+    #
+    #     # Save the time it took to do this.
+    #     self.processing_time = timeit.default_timer() - start_time
+    #     arcade.pause(0.05)
+    #     self.total_time += delta_time
 
     # """Metodo usado pelo framework para capturar o input"""
     # def captura_entrada(self):
@@ -517,17 +530,10 @@ class LabirintiteGame(arcade.Window):
 
     def verifica_fim(self, jogador_X, jogador_Y):
 
-        if jogador_X == SAIDA_X and jogador_Y == SAIDA_Y and self.vencedor == False:
-            self.vencedor = True
-            print("Achoooo")
-            self.tempo_final = self.total_time
-            print("Seu tempo foi de: "'%6.2f' % self.tempo_final)
+        if jogador_X == SAIDA_X and jogador_Y == SAIDA_Y:
             return True
         else:
             return False
-
-
-
 
 def main():
     """ Main method """
@@ -536,5 +542,20 @@ def main():
     arcade.run()
 
 
+def construtor():
+    """Teste para subistituir o metodo main, na adaptação par ao framework"""
+    _window = LabirintiteGame(LARGURA_TELA, ALTURA_TELA, TITULO_TELA)
+    _window.setup()
+    arcade.run()
+    return _window
+
+
+
 if __name__ == "__main__":
     main()
+
+
+def campoDeVisao():
+
+
+    return None

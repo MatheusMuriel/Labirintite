@@ -13,13 +13,18 @@ def iniciar_jogo():
     
     # Inicializar e configurar jogo
     jogo = construir_jogo()
-    id_jogador, jogador = jogo.registrarAgenteJogador(), construir_agente()
+    lista_jogadores = []
+    id_jogador = jogo.registrarAgenteJogador(lista_jogadores,jogo)
+    jogador = construir_agente()
     tempo_de_jogo = 0
+    jogo.iniciaJogo()
 
-    while not jogo.isFim():
+    objeto_jogador = lista_jogadores[0]
+    personagem_jogador = objeto_jogador[0]
+    while not jogo.isFim(personagem_jogador, jogo):
         
         # Mostrar mundo ao jogador
-        ambiente_perceptivel = jogo.gerarCampoVisao(id_jogador)
+        ambiente_perceptivel = jogo.gerarCampoVisao(id_jogador, jogo)
         jogador.adquirirPercepcao(ambiente_perceptivel)
         
         # Decidir jogada e apresentar ao jogo
