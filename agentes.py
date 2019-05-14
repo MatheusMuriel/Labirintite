@@ -51,6 +51,8 @@ class AgenteHumano(Agente):
     def get_id(self):
         return self.id
 
+
+
     @classmethod
     def all(cls):
         return cls.agentes

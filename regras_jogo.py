@@ -52,6 +52,7 @@ class Labirinto(RegrasJogo):
 
     def __init__(self):
         self.jogavel = None #É um objeto LabirintiteGame
+        self.jogador = None
     
     def registrarAgenteJogador(self, elemAgente):
         """ Cria ou recupera id de um elemento de jogo agente.
@@ -59,6 +60,7 @@ class Labirinto(RegrasJogo):
         """
         
         id_agente_registrado = elemAgente.get_id()
+        self.jogador = elemAgente
 
         return id_agente_registrado
     
@@ -68,7 +70,7 @@ class Labirinto(RegrasJogo):
         fim = self.jogavel.verifica_fim()
         return fim
 
-    def gerarCampoVisao(self, idAgente, jogo):
+    def gerarCampoVisao(self):
         """ Retorna um EstadoJogoView para ser consumido por um agente
         específico. Objeto deve conter apenas descrição de elementos visíveis
         para este agente.
@@ -76,10 +78,17 @@ class Labirinto(RegrasJogo):
         EstadoJogoView é um objeto imutável ou uma cópia do jogo, de forma que
         sua manipulação direta não tem nenhum efeito no mundo de jogo real.
         """
+        tipo_jogador = self.jogador.tipo_agente
 
-        estadoJogoView = Labirintite.campoDeVisao()
+        if tipo_jogador == 'HUMANO':
+            # Basta o humano olhar para a tela
+            return self.jogavel.labirinto
+        elif tipo_jogador == 'ROBO':
+            return self.jogavel.labirinto
+        else:
+            raise print("Não foi possivel gerar o campo de visão, tipo de agente desconhecido.")
 
-        return
+        return jogo_view
 
     def registrarProximaAcao(self, id_jogador, acao):
         """ Informa ao jogo qual a ação de um jogador especificamente.

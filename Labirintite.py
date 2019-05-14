@@ -217,7 +217,7 @@ class LabirintiteGame(arcade.Window):
         self.total_time = 0.0
 
         # Cria o labirinto
-        labirinto = criaLabirinto(ALTURA_LABIRINTO, ALTURA_LABIRINTO)
+        self.labirinto = criaLabirinto(ALTURA_LABIRINTO, ALTURA_LABIRINTO)
 
         # Metodo responsavel por definir o sprite e suas cordenadas
         # Grava tudo na lista de Sprites para dps o metodo on_draw renderizar
@@ -238,11 +238,11 @@ class LabirintiteGame(arcade.Window):
         # Usa tecnica de Tilemap
         for linha in range(ALTURA_LABIRINTO):
             for coluna in range(LARGURA_LABIRINTO):
-                localizacao = labirinto[linha][coluna]
-                lateralEsq = labirinto[linha][coluna - 1]
-                lateralDir = labirinto[linha][coluna + 1] if coluna < LARGURA_LABIRINTO-1 else -100
-                superior = labirinto[linha + 1][coluna] if linha < ALTURA_LABIRINTO-1 else -100
-                inferior = labirinto[linha - 1][coluna]
+                localizacao = self.labirinto[linha][coluna]
+                lateralEsq = self.labirinto[linha][coluna - 1]
+                lateralDir = self.labirinto[linha][coluna + 1] if coluna < LARGURA_LABIRINTO-1 else -100
+                superior = self.labirinto[linha + 1][coluna] if linha < ALTURA_LABIRINTO-1 else -100
+                inferior = self.labirinto[linha - 1][coluna]
 
                 if localizacao == TILE_CHAO:
                     preenchedor(ASSET_CHAO, self.chao_list)
@@ -560,7 +560,7 @@ if __name__ == "__main__":
     main()
 
 
-def campoDeVisao():
+def getCampoDeVisao():
 
-
+    print("Nao implementado.")
     return None

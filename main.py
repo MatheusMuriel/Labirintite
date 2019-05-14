@@ -25,7 +25,7 @@ def iniciar_jogo():
     while not jogo.isFim():
         
         # Mostrar mundo ao jogador
-        ambiente_perceptivel = jogo.gerarCampoVisao(id_jogador, jogo)
+        ambiente_perceptivel = jogo.gerarCampoVisao()
         jogador.adquirirPercepcao(ambiente_perceptivel)
         
         # Decidir jogada e apresentar ao jogo
