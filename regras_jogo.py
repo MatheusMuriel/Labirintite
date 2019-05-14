@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 import Labirintite
 import agentes
 
+"""Interface com metodos abstratos. Deve ser herdada e sobrecarregada."""
 class RegrasJogo(ABC):
     """ Interface mínima para implementar um jogo interativo e modular. Não
     tente instanciar objetos dessa classe, ela deve ser herdada e seus métodos
@@ -46,18 +47,17 @@ class RegrasJogo(ABC):
         """
         return
 
+"""Implementação da interface *RegrasJogo*, aqui os metodos são sobrecarregados."""
 class Labirinto(RegrasJogo):
-    JOGADOR_PADRAO = None
     
-    def registrarAgenteJogador(self, lista_jogadores, jogo, elemAgente=JOGADOR_PADRAO):
+    def registrarAgenteJogador(self, elemAgente):
         """ Cria ou recupera id de um elemento de jogo agente.
             Tem como retorno o ID do jogador
         """
-        jogador = Labirintite.LabirintiteGame.cria_jogador(jogo, lista_jogadores)
-        print("Teste")
-        #jogador = jogo.cria_jogador(lista_jogadores)
+        
+        id_agente_registrado = elemAgente.get_id()
 
-        return int(jogador[1])
+        return id_agente_registrado
     
     def isFim(self, jogador, jogo):
         """ Boolean indicando fim de jogo em True.
@@ -95,6 +95,7 @@ class Labirinto(RegrasJogo):
         jogo = Labirintite.construtor()
         #Labirintite.construtor()
         return jogo
+
 
 def construir_jogo(*args,**kwargs):
     """ Método factory para uma instância Jogavel arbitrária, de acordo com os

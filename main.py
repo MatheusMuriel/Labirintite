@@ -13,14 +13,15 @@ def iniciar_jogo():
     
     # Inicializar e configurar jogo
     jogo = construir_jogo()
-    lista_jogadores = []
-    id_jogador = jogo.registrarAgenteJogador(lista_jogadores,jogo)
-    jogador = construir_agente()
+    
+    jogador = construir_agente('HUMANO')
+    id_jogador = jogo.registrarAgenteJogador(jogador)
+    
     tempo_de_jogo = 0
+    
     jogo.iniciaJogo()
 
-    objeto_jogador = lista_jogadores[0]
-    personagem_jogador = objeto_jogador[0]
+    """Game loop principal."""
     while not jogo.isFim(personagem_jogador, jogo):
         
         # Mostrar mundo ao jogador

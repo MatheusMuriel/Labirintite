@@ -48,6 +48,9 @@ class AgenteHumano(Agente):
     def __repr__(self):
         return '<{}: {} - {}\n'.format(self.__class__.__name__, self.id, self.tipo_agente)
 
+    def get_id(self):
+        return self.id
+
     @classmethod
     def all(cls):
         return cls.agentes
@@ -86,6 +89,9 @@ class AgenteRobo(Agente):
 
     def __repr__(self):
         return '<{}: {} - {}\n'.format(self.__class__.__name__, self.id, self.tipo_agente)
+    
+    def get_id(self):
+        return self.id
 
     @classmethod
     def all(cls):
@@ -105,8 +111,15 @@ class AgenteRobo(Agente):
         print("Ainda não implementado")
 
 
-def construir_agente(*args,**kwargs):
+def construir_agente(tipo_agente):
     """ Método factory para uma instância Agente arbitrária, de acordo com os
     paraâmetros. Pode-se mudar à vontade a assinatura do método.
     """
-    return AgenteHumano()
+    if tipo_agente == 'HUMANO':
+        agente = AgenteHumano()
+    elif tipo_agente == 'ROBO':
+        agente = AgenteRobo()
+    else:
+        raise print("Tipo de agente desconhecido. Por favor escolha HUMANO ou ROBO.")
+    
+    return agente
