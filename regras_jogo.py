@@ -49,6 +49,9 @@ class RegrasJogo(ABC):
 
 """Implementação da interface *RegrasJogo*, aqui os metodos são sobrecarregados."""
 class Labirinto(RegrasJogo):
+
+    def __init__(self):
+        self.jogavel = None #É um objeto LabirintiteGame
     
     def registrarAgenteJogador(self, elemAgente):
         """ Cria ou recupera id de um elemento de jogo agente.
@@ -59,10 +62,10 @@ class Labirinto(RegrasJogo):
 
         return id_agente_registrado
     
-    def isFim(self, jogador, jogo):
+    def isFim(self):
         """ Boolean indicando fim de jogo em True.
         """
-        fim = Labirintite.LabirintiteGame.verifica_fim(jogador, jogador.center_x, jogador.center_y)
+        fim = self.jogavel.verifica_fim()
         return fim
 
     def gerarCampoVisao(self, idAgente, jogo):
@@ -90,12 +93,10 @@ class Labirinto(RegrasJogo):
         de acordo com as ações de cada jogador registradas anteriormente.
         """
         return
-
+    
     def iniciaJogo(self):
-        jogo = Labirintite.construtor()
-        #Labirintite.construtor()
-        return jogo
-
+        jogavel = Labirintite.construtor()
+        self.jogavel = jogavel
 
 def construir_jogo(*args,**kwargs):
     """ Método factory para uma instância Jogavel arbitrária, de acordo com os

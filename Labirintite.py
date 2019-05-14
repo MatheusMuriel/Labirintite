@@ -72,7 +72,6 @@ TILE_SAIDA = 99
 SAIDA_X = 0
 SAIDA_Y = 0
 
-
 # Faz uma "matriz" usando uma lista de lista
 def criarGrade(largura, altura):
     grade = []
@@ -149,20 +148,21 @@ def criaLabirinto(lab_largura, lab_altura):
 
     return lab
 
-
 class LabirintiteGame(arcade.Window):
     vencedor = False
     tempo_final = 0
 
     def __init__(self, largura, altura, titulo):
         # Inicializador.
-        super().__init__(largura, altura, titulo)
+        super().__init__(largura, altura, titulo) #Abre a janela
 
         # Sprite lists
         self.jogador_list = None
         self.parede_list = None
         self.saida_list = None
         self.chao_list = None
+        self.jogador_x = None
+        self.jogador_y = None
         largura, altura = self.get_size()
         self.set_viewport(0, largura, 0, altura)
 
@@ -206,7 +206,6 @@ class LabirintiteGame(arcade.Window):
 
         return objeto_jogador
 
-
     """ Setup e inicialização de variaveis. """
     def setup(self):
         # Lista de Sprites
@@ -218,7 +217,7 @@ class LabirintiteGame(arcade.Window):
         self.total_time = 0.0
 
         # Cria o labirinto
-        labirinto = criaLabirinto(LARGURA_LABIRINTO, ALTURA_LABIRINTO)
+        labirinto = criaLabirinto(ALTURA_LABIRINTO, ALTURA_LABIRINTO)
 
         # Metodo responsavel por definir o sprite e suas cordenadas
         # Grava tudo na lista de Sprites para dps o metodo on_draw renderizar
@@ -417,6 +416,8 @@ class LabirintiteGame(arcade.Window):
 
         self.tempo_render = timeit.default_timer() - tempo_inicio_render
 
+        arcade.finish_render()
+
     """Metodo chamado quando qualquer tecla é pressionada. """
     def on_key_press(self, tecla, modifiers):
 
@@ -528,9 +529,14 @@ class LabirintiteGame(arcade.Window):
     #         self.jogador.change_x = VELOCIDADE_MOVIMENTO
     #         self.jogador.set_texture(4)
 
-    def verifica_fim(self, jogador_X, jogador_Y):
+    def verifica_fim(self):
+        jogador_x = self.jogador.center_x
+        jogador_y = self.jogador.center_y
 
-        if jogador_X == SAIDA_X and jogador_Y == SAIDA_Y:
+        _xx = SAIDA_X
+        _yy = SAIDA_Y
+
+        if jogador_x == SAIDA_X and jogador_y == SAIDA_Y:
             return True
         else:
             return False
@@ -544,11 +550,10 @@ def main():
 
 def construtor():
     """Teste para subistituir o metodo main, na adaptação par ao framework"""
-    _window = LabirintiteGame(LARGURA_TELA, ALTURA_TELA, TITULO_TELA)
-    _window.setup()
-    arcade.run()
-    return _window
-
+    ret_labirinto = LabirintiteGame(LARGURA_TELA, ALTURA_TELA, TITULO_TELA)
+    ret_labirinto.setup()
+    ret_labirinto.on_draw()
+    return ret_labirinto
 
 
 if __name__ == "__main__":

@@ -18,11 +18,11 @@ def iniciar_jogo():
     id_jogador = jogo.registrarAgenteJogador(jogador)
     
     tempo_de_jogo = 0
-    
+
     jogo.iniciaJogo()
 
     """Game loop principal."""
-    while not jogo.isFim(personagem_jogador, jogo):
+    while not jogo.isFim():
         
         # Mostrar mundo ao jogador
         ambiente_perceptivel = jogo.gerarCampoVisao(id_jogador, jogo)
