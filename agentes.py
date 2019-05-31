@@ -1,6 +1,7 @@
 # Código com definição de agentes abstratos a serem utilizados em nossas aulas.
 
 from abc import ABC, abstractmethod
+from Labirintite import captura_entrada
 
 
 
@@ -51,24 +52,26 @@ class AgenteHumano(Agente):
     def get_id(self):
         return self.id
 
-
-
     @classmethod
     def all(cls):
         return cls.agentes
 
-    def adquirirPercepcao(self, percepcao_mundo):
+    def adquirirPercepcao(self, percepcao_mundo, jogo):
         # Utilize percepcao de mundo para atualizar tela (terminal ou blit),
         # tocar sons, dispositivos hápticos, etc, todo e qualquer dispositivo
         # de saída para interface humana.
+
+        jogo.jogavel.on_draw()
         
         print("Admire a tela")
     
-    def escolherProximaAcao(self):
+    def escolherProximaAcao(self, jogo):
         # Receba entrada humana apenas neste momento, seja com prompt (terminal)
         # ou polling (jogos interativos).
-        
-        return input('Proxima ação: ')
+
+        dir = input("Proxima direção? ")
+        print("Direção escolhida foi: ", dir)
+        return dir
 
 class AgenteRobo(Agente):
     sequencia = 0
@@ -102,7 +105,7 @@ class AgenteRobo(Agente):
     def adquirirPercepcao(self, percepcao_mundo):
         # Utilize percepcao de mundo para atualizar tela (terminal ou blit),
         # tocar sons, dispositivos hápticos, etc, todo e qualquer dispositivo
-        # de saída para interface humana.
+        # de saída para interface robotica.
         
         print("Ainda não implementado")
     

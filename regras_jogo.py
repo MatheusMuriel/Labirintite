@@ -53,6 +53,8 @@ class Labirinto(RegrasJogo):
     def __init__(self):
         self.jogavel = None #É um objeto LabirintiteGame
         self.jogador = None
+        #Lista com [jogador, direção]
+        self.historico_estados = []
     
     def registrarAgenteJogador(self, elemAgente):
         """ Cria ou recupera id de um elemento de jogo agente.
@@ -95,12 +97,18 @@ class Labirinto(RegrasJogo):
         Neste momento, o jogo ainda não é transformado em seu próximo estado,
         isso é feito no método de atualização do mundo.
         """
+        registro_acao = [id_jogador, acao]
+        self.historico_estados.append(registro_acao)
+        print("Registrado", registro_acao)
         return
     
     def atualizarEstado(self, diferencial_tempo):
         """ Apenas neste momento o jogo é atualizado para seu próximo estado
         de acordo com as ações de cada jogador registradas anteriormente.
         """
+        ultima_acao = self.historico_estados[ len(self.historico_estados) - 1 ]
+        print(ultima_acao)
+
         return
     
     def iniciaJogo(self):

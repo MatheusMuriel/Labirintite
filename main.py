@@ -26,10 +26,10 @@ def iniciar_jogo():
         
         # Mostrar mundo ao jogador
         ambiente_perceptivel = jogo.gerarCampoVisao()
-        jogador.adquirirPercepcao(ambiente_perceptivel)
+        jogador.adquirirPercepcao(ambiente_perceptivel, jogo)
         
         # Decidir jogada e apresentar ao jogo
-        acao = jogador.escolherProximaAcao()
+        acao = jogador.escolherProximaAcao(jogo)
         jogo.registrarProximaAcao(id_jogador, acao)
 
         # Atualizar jogo

@@ -4,6 +4,8 @@ Projeto de Inteligencia Artificial
 """
 import copy
 import random
+import time
+
 import arcade
 import timeit
 import os
@@ -155,6 +157,8 @@ class LabirintiteGame(arcade.Window):
     def __init__(self, largura, altura, titulo):
         # Inicializador.
         super().__init__(largura, altura, titulo) #Abre a janela
+        global direcao_pressiona
+        direcao_pressiona = ''
 
         # Sprite lists
         self.jogador_list = None
@@ -163,6 +167,7 @@ class LabirintiteGame(arcade.Window):
         self.chao_list = None
         self.jogador_x = None
         self.jogador_y = None
+        self.direcao_precionada = None
         largura, altura = self.get_size()
         self.set_viewport(0, largura, 0, altura)
 
@@ -421,29 +426,29 @@ class LabirintiteGame(arcade.Window):
     """Metodo chamado quando qualquer tecla é pressionada. """
     def on_key_press(self, tecla, modifiers):
 
-        direcao_pressiona = ''
 
         if tecla == arcade.key.UP or tecla == arcade.key.W:
-            self.jogador.change_y = VELOCIDADE_MOVIMENTO
-            self.jogador.set_texture(1)
-            direcao_pressiona = 'CIMA'
+            #self.jogador.change_y = VELOCIDADE_MOVIMENTO
+            #self.jogador.set_texture(1)
+            self.direcao_precionada = 'CIMA'
 
         elif tecla == arcade.key.DOWN or tecla == arcade.key.S:
-            self.jogador.change_y = -(VELOCIDADE_MOVIMENTO)
-            self.jogador.set_texture(2)
-            direcao_pressiona = 'BAIXO'
+            #self.jogador.change_y = -(VELOCIDADE_MOVIMENTO)
+            #self.jogador.set_texture(2)
+            self.direcao_precionada = 'BAIXO'
 
         elif tecla == arcade.key.LEFT or tecla == arcade.key.D:
-            self.jogador.change_x = -(VELOCIDADE_MOVIMENTO)
-            self.jogador.set_texture(3)
-            direcao_pressiona = 'ESQUERDA'
+            #self.jogador.change_x = -(VELOCIDADE_MOVIMENTO)
+            #self.jogador.set_texture(3)
+            self.direcao_precionada = 'ESQUERDA'
 
         elif tecla == arcade.key.RIGHT or tecla == arcade.key.A:
-            self.jogador.change_x = VELOCIDADE_MOVIMENTO
-            self.jogador.set_texture(4)
-            direcao_pressiona = 'DIREITA'
+            #self.jogador.change_x = VELOCIDADE_MOVIMENTO
+            #self.jogador.set_texture(4)
+            self.direcao_precionada = 'DIREITA'
 
-        return direcao_pressiona
+        #arcade.
+        #return direcao_pressiona
 
     """Metodo chamado quando o usuario solta a tecla. """
     def on_key_release(self, key, modifiers):
@@ -453,81 +458,63 @@ class LabirintiteGame(arcade.Window):
         elif key == arcade.key.LEFT or key == arcade.key.RIGHT:
             self.jogador.change_x = 0
 
-    # def update(self, delta_time):
-    #     """ Movement and game logic """
-    #
-    #     start_time = timeit.default_timer()
-    #
-    #     # Call update on all sprites (The sprites don't do much in this
-    #     # example though.)
-    #     self.physics_engine.update()
-    #
-    #     jogador_X = self.jogador.center_x
-    #     jogador_Y = self.jogador.center_y
-    #
-    #     self.verifica_fim(jogador_X, jogador_Y)
-    #
-    #     if jogador_X == SAIDA_X + 32 and jogador_Y == SAIDA_Y:
-    #         arcade.close_window()
-    #
-    #     # --- Manage Scrolling ---
-    #
-    #     # Track if we need to change the viewport
-    #
-    #     changed = False
-    #
-    #     # Scroll left
-    #     left_bndry = self.visao_esquerda + CAMPO_VISAO
-    #     if self.jogador.left <= left_bndry:
-    #         self.visao_esquerda -= left_bndry - self.jogador.left
-    #         changed = True
-    #
-    #     # Scroll right
-    #     right_bndry = self.visao_esquerda + LARGURA_TELA - CAMPO_VISAO
-    #     if self.jogador.right >= right_bndry:
-    #         self.visao_esquerda += self.jogador.right - right_bndry
-    #         changed = True
-    #
-    #     # Scroll up
-    #     top_bndry = self.visao_inferior + ALTURA_TELA - CAMPO_VISAO
-    #     if self.jogador.top >= top_bndry:
-    #         self.visao_inferior += self.jogador.top - top_bndry
-    #         changed = True
-    #
-    #     # Scroll down
-    #     bottom_bndry = self.visao_inferior + CAMPO_VISAO
-    #     if self.jogador.bottom <= bottom_bndry:
-    #         self.visao_inferior -= bottom_bndry - self.jogador.bottom
-    #         changed = True
-    #
-    #     if changed:
-    #         arcade.set_viewport(self.visao_esquerda,
-    #                             LARGURA_TELA + self.visao_esquerda,
-    #                             self.visao_inferior,
-    #                             LARGURA_TELA + self.visao_inferior)
-    #
-    #     # Save the time it took to do this.
-    #     self.processing_time = timeit.default_timer() - start_time
-    #     arcade.pause(0.05)
-    #     self.total_time += delta_time
+    def update(self, delta_time):
+        """ Movement and game logic """
 
-    # """Metodo usado pelo framework para capturar o input"""
-    # def captura_entrada(self):
-    #     if tecla == arcade.key.UP or tecla == arcade.key.W:
-    #         self.jogador.change_y = VELOCIDADE_MOVIMENTO
-    #         self.jogador.set_texture(1)
-    #
-    #     elif tecla == arcade.key.DOWN or tecla == arcade.key.S:
-    #         self.jogador.change_y = -(VELOCIDADE_MOVIMENTO)
-    #         self.jogador.set_texture(2)
-    #
-    #     elif tecla == arcade.key.LEFT or tecla == arcade.key.D:
-    #         self.jogador.change_x = -(VELOCIDADE_MOVIMENTO)
-    #         self.jogador.set_texture(3)
-    #
-    #     elif tecla == arcade.key.RIGHT or tecla == arcade.key.A:
-    #         self.jogador.change_x = VELOCIDADE_MOVIMENTO
-    #         self.jogador.set_texture(4)
+        start_time = timeit.default_timer()
+
+        # Call update on all sprites (The sprites don't do much in this
+        # example though.)
+        self.physics_engine.update()
+
+        jogador_X = self.jogador.center_x
+        jogador_Y = self.jogador.center_y
+
+        #self.verifica_fim(jogador_X, jogador_Y)
+
+        if jogador_X == SAIDA_X + 32 and jogador_Y == SAIDA_Y:
+            arcade.close_window()
+
+        # --- Manage Scrolling ---
+
+        # Track if we need to change the viewport
+
+        changed = False
+
+        # Scroll left
+        left_bndry = self.visao_esquerda + CAMPO_VISAO
+        if self.jogador.left <= left_bndry:
+            self.visao_esquerda -= left_bndry - self.jogador.left
+            changed = True
+
+        # Scroll right
+        right_bndry = self.visao_esquerda + LARGURA_TELA - CAMPO_VISAO
+        if self.jogador.right >= right_bndry:
+            self.visao_esquerda += self.jogador.right - right_bndry
+            changed = True
+
+        # Scroll up
+        top_bndry = self.visao_inferior + ALTURA_TELA - CAMPO_VISAO
+        if self.jogador.top >= top_bndry:
+            self.visao_inferior += self.jogador.top - top_bndry
+            changed = True
+
+        # Scroll down
+        bottom_bndry = self.visao_inferior + CAMPO_VISAO
+        if self.jogador.bottom <= bottom_bndry:
+            self.visao_inferior -= bottom_bndry - self.jogador.bottom
+            changed = True
+
+        if changed:
+            arcade.set_viewport(self.visao_esquerda,
+                                LARGURA_TELA + self.visao_esquerda,
+                                self.visao_inferior,
+                                LARGURA_TELA + self.visao_inferior)
+
+        # Save the time it took to do this.
+        self.processing_time = timeit.default_timer() - start_time
+        arcade.pause(0.05)
+        self.total_time += delta_time
 
     def verifica_fim(self):
         jogador_x = self.jogador.center_x
@@ -540,6 +527,20 @@ class LabirintiteGame(arcade.Window):
             return True
         else:
             return False
+
+    def pega_input(self):
+        self.direcao_precionada = ''
+        print("Aguardando entrada.")
+        while True:
+            # Fica aguardando
+            if self.direcao_precionada != '':
+                direcao = self.direcao_precionada
+
+                return direcao
+            arcade.time.sleep(0.1)
+        direcao = self.direcao_precionada
+
+        return direcao
 
 def main():
     """ Main method """
@@ -561,6 +562,34 @@ if __name__ == "__main__":
 
 
 def getCampoDeVisao():
-
     print("Nao implementado.")
     return None
+
+class captura_entrada(arcade.Window):
+    """Metodo chamado quando qualquer tecla é pressionada. """
+    def on_key_press(self, tecla, modifiers):
+
+        direcao_pressiona = ''
+
+        if tecla == arcade.key.UP or tecla == arcade.key.W:
+            #self.jogador.change_y = VELOCIDADE_MOVIMENTO
+            #self.jogador.set_texture(1)
+            self.direcao_precionada = 'CIMA'
+
+        elif tecla == arcade.key.DOWN or tecla == arcade.key.S:
+            #self.jogador.change_y = -(VELOCIDADE_MOVIMENTO)
+            #self.jogador.set_texture(2)
+            self.direcao_precionada = 'BAIXO'
+
+        elif tecla == arcade.key.LEFT or tecla == arcade.key.D:
+            #self.jogador.change_x = -(VELOCIDADE_MOVIMENTO)
+            #self.jogador.set_texture(3)
+            self.direcao_precionada = 'ESQUERDA'
+
+        elif tecla == arcade.key.RIGHT or tecla == arcade.key.A:
+            #self.jogador.change_x = VELOCIDADE_MOVIMENTO
+            #self.jogador.set_texture(4)
+            self.direcao_precionada = 'DIREITA'
+
+        #arcade.
+        return direcao_pressiona
