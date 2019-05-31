@@ -38,8 +38,8 @@ ASSET_CRUZAMENTO = "cenario/cruzamento.png"
 
 
 ## Tela ##
-LARGURA_TELA = 800
-ALTURA_TELA = 690
+LARGURA_TELA = 500
+ALTURA_TELA = 500
 TITULO_TELA = "Labirintite"
 CAMPO_VISAO = 10
 
@@ -151,14 +151,10 @@ def criaLabirinto(lab_largura, lab_altura):
     return lab
 
 class LabirintiteGame(arcade.Window):
-    vencedor = False
-    tempo_final = 0
 
     def __init__(self, largura, altura, titulo):
         # Inicializador.
         super().__init__(largura, altura, titulo) #Abre a janela
-        global direcao_pressiona
-        direcao_pressiona = ''
 
         # Sprite lists
         self.jogador_list = None
@@ -171,45 +167,12 @@ class LabirintiteGame(arcade.Window):
         largura, altura = self.get_size()
         self.set_viewport(0, largura, 0, altura)
 
-        # Player info
-
-        #self.jogador = self.cria_jogador(lista_jogadores)
-
-
         # Engine de Fisica
         self.physics_engine = None
 
         # Usado para mover o campo de visao
         self.visao_inferior = 0
         self.visao_esquerda = 0
-
-        # Tempo de processamento
-        self.total_time = 0.0
-        self.processing_time = 0
-        self.tempo_render = 0
-
-    def cria_jogador(self, lista_jogadores, tipo_jogador='HUMANO'):
-        """Retorna objeto com - jogador, id, tipo, score -"""
-        # ID do jogador é o seu indice da lista
-
-        id = len(lista_jogadores) + 1
-        tipo = tipo_jogador
-        score = 0
-
-
-        self.jogador = arcade.Sprite(ASSET_JOGADOR, ESCALA_SPRITE)
-        self.jogador.append_texture(arcade.load_texture("tite/up.png", scale=ESCALA_SPRITE))
-        self.jogador.append_texture(arcade.load_texture("tite/down.png", scale=ESCALA_SPRITE))
-        self.jogador.append_texture(arcade.load_texture("tite/sideE.png", scale=ESCALA_SPRITE))
-        self.jogador.append_texture(arcade.load_texture("tite/sideD.png", scale=ESCALA_SPRITE))
-
-
-        jogador = self.jogador
-
-        objeto_jogador = [jogador, id, tipo, score]
-        lista_jogadores.append(objeto_jogador)
-
-        return objeto_jogador
 
     """ Setup e inicialização de variaveis. """
     def setup(self):
@@ -362,64 +325,15 @@ class LabirintiteGame(arcade.Window):
     """Metodo que renderiza a tela. """
     def on_draw(self):
 
-        # Comando obrigatorio antes de começar a printar os graficos na tela
+        # Comando obrigatorio antes de começar a printar os sprites na tela
         arcade.start_render()
 
-        minutes = int(self.total_time)//60
-        seconds = int(self.total_time) % 60
-        output = f"Time: {minutes:02d}:{seconds:02d}"
-
-        # Cronometro para conferir o tempo de renderezição.
-        tempo_inicio_render = timeit.default_timer()
         # Printa todos os itens da lista de sprites.
         # A ordem deles faz diferença.
         self.chao_list.draw()
         self.parede_list.draw()
         self.saida_list.draw()
         self.jogador_list.draw()
-
-        # Draw info on the screen
-        # Printa informações na tela
-        sprite_count = len(self.parede_list)
-
-
-        output = f"Numero de Sprites: {sprite_count}"
-        arcade.draw_text(output,
-                         self.visao_esquerda + 20,
-                         ALTURA_LABIRINTO - 20 + self.visao_inferior,
-                         arcade.color.WHITE, 16)
-
-        output = f"Tempo de Renderização: {self.tempo_render:.3f}"
-        arcade.draw_text(output,
-                         self.visao_esquerda + 20,
-                         ALTURA_TELA - 40 + self.visao_inferior,
-                         arcade.color.WHITE, 16)
-
-        output = f"Tempo de processamento: {self.processing_time:.3f}"
-        arcade.draw_text(output,
-                         self.visao_esquerda + 20,
-                         ALTURA_TELA - 60 + self.visao_inferior,
-                         arcade.color.WHITE, 16)
-
-        output = f"Tempo de jogo: {self.total_time:.2f}"
-        arcade.draw_text(output,
-                         self.visao_esquerda + 20,
-                         ALTURA_TELA - 80 + self.visao_inferior,
-                         arcade.color.WHITE, 16)
-
-        if self.vencedor == True:
-            output = f"Você ganhou, seu tempo foi de: {self.tempo_final:.2f}"
-            arcade.draw_text(output,
-                             self.visao_esquerda + 60,
-                             ALTURA_TELA // 2 - 20,
-                             arcade.color.RED, 32)
-            output = f"click para frente para sair:"
-            arcade.draw_text(output,
-                             self.visao_esquerda + 60,
-                             ALTURA_TELA // 2 - 60,
-                             arcade.color.RED, 32)
-
-        self.tempo_render = timeit.default_timer() - tempo_inicio_render
 
         arcade.finish_render()
 
@@ -458,6 +372,27 @@ class LabirintiteGame(arcade.Window):
         elif key == arcade.key.LEFT or key == arcade.key.RIGHT:
             self.jogador.change_x = 0
 
+    def cria_jogador(self, lista_jogadores, tipo_jogador='HUMANO'):
+        """Retorna objeto com - jogador, id, tipo, score -"""
+        # ID do jogador é o seu indice da lista
+
+        id = len(lista_jogadores) + 1
+        tipo = tipo_jogador
+        score = 0
+
+        self.jogador = arcade.Sprite(ASSET_JOGADOR, ESCALA_SPRITE)
+        self.jogador.append_texture(arcade.load_texture("tite/up.png", scale=ESCALA_SPRITE))
+        self.jogador.append_texture(arcade.load_texture("tite/down.png", scale=ESCALA_SPRITE))
+        self.jogador.append_texture(arcade.load_texture("tite/sideE.png", scale=ESCALA_SPRITE))
+        self.jogador.append_texture(arcade.load_texture("tite/sideD.png", scale=ESCALA_SPRITE))
+
+        jogador = self.jogador
+
+        objeto_jogador = [jogador, id, tipo, score]
+        lista_jogadores.append(objeto_jogador)
+
+        return objeto_jogador
+
     """Metodo usado pelo FrameWork para atualizar o espaço do jogo"""
     def atualiza_estado(self, direcao, diferencial_tempo):
         direcao = direcao.upper()
@@ -491,10 +426,8 @@ class LabirintiteGame(arcade.Window):
         jogador_X = self.jogador.center_x
         jogador_Y = self.jogador.center_y
 
-        #self.verifica_fim(jogador_X, jogador_Y)
-
-        if jogador_X == SAIDA_X + 32 and jogador_Y == SAIDA_Y:
-            arcade.close_window()
+        #if jogador_X == SAIDA_X + 32 and jogador_Y == SAIDA_Y:
+        #    arcade.close_window()
 
         # --- Manage Scrolling ---
 
@@ -534,34 +467,25 @@ class LabirintiteGame(arcade.Window):
 
         # Save the time it took to do this.
         self.processing_time = timeit.default_timer() - start_time
-        arcade.pause(0.05)
+        #arcade.pause(0.05)
         self.total_time += delta_time
 
     def verifica_fim(self):
         jogador_x = self.jogador.center_x
         jogador_y = self.jogador.center_y
 
-        _xx = SAIDA_X
-        _yy = SAIDA_Y
-
         if jogador_x == SAIDA_X and jogador_y == SAIDA_Y:
+            arcade.start_render()
+            output = f"Parabéns, você ganhou!"
+            arcade.draw_text(output,
+                             self.visao_esquerda + 70,
+                             ALTURA_TELA // 2 - 20,
+                             arcade.color.RED, 18)
+            arcade.finish_render()
+            input("Aperte Enter para sair.")
             return True
         else:
             return False
-
-    def pega_input(self):
-        self.direcao_precionada = ''
-        print("Aguardando entrada.")
-        while True:
-            # Fica aguardando
-            if self.direcao_precionada != '':
-                direcao = self.direcao_precionada
-
-                return direcao
-            arcade.time.sleep(0.1)
-        direcao = self.direcao_precionada
-
-        return direcao
 
 def main():
     """ Main method """
@@ -575,9 +499,6 @@ def construtor():
     ret_labirinto.setup()
     ret_labirinto.on_draw()
     return ret_labirinto
-
-if __name__ == "__main__":
-    main()
 
 def getCampoDeVisao():
     print("Nao implementado.")
