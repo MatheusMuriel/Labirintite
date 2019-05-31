@@ -106,13 +106,18 @@ class Labirinto(RegrasJogo):
         """ Apenas neste momento o jogo é atualizado para seu próximo estado
         de acordo com as ações de cada jogador registradas anteriormente.
         """
+        #Objeto que contém [Jogador, Movimento]
         ultima_acao = self.historico_estados[ len(self.historico_estados) - 1 ]
-        print(ultima_acao)
+
+        #Passa somente a direção
+        self.jogavel.atualiza_estado( ultima_acao[1], diferencial_tempo )
 
         return
     
     def iniciaJogo(self):
+        #Decidir qual metodo vai usar
         jogavel = Labirintite.construtor()
+        #jogavel = Labirintite.main()
         self.jogavel = jogavel
 
 def construir_jogo(*args,**kwargs):

@@ -167,7 +167,7 @@ class LabirintiteGame(arcade.Window):
         self.chao_list = None
         self.jogador_x = None
         self.jogador_y = None
-        self.direcao_precionada = None
+        
         largura, altura = self.get_size()
         self.set_viewport(0, largura, 0, altura)
 
@@ -458,6 +458,27 @@ class LabirintiteGame(arcade.Window):
         elif key == arcade.key.LEFT or key == arcade.key.RIGHT:
             self.jogador.change_x = 0
 
+    """Metodo usado pelo FrameWork para atualizar o espaço do jogo"""
+    def atualiza_estado(self, direcao, diferencial_tempo):
+        direcao = direcao.upper()
+
+        if direcao == 'CIMA':
+            self.jogador.change_y = VELOCIDADE_MOVIMENTO
+            self.jogador.set_texture(1)
+        elif direcao == 'BAIXO':
+            self.jogador.change_y = -(VELOCIDADE_MOVIMENTO)
+            self.jogador.set_texture(2)
+        elif direcao == 'ESQUERDA':
+            self.jogador.change_x = -(VELOCIDADE_MOVIMENTO)
+            self.jogador.set_texture(3)
+        elif direcao == 'DIREITA':
+            self.jogador.change_x = VELOCIDADE_MOVIMENTO
+            self.jogador.set_texture(4)
+
+        self.update(diferencial_tempo)
+
+        return
+    
     def update(self, delta_time):
         """ Movement and game logic """
 
@@ -548,7 +569,6 @@ def main():
     window.setup()
     arcade.run()
 
-
 def construtor():
     """Teste para subistituir o metodo main, na adaptação par ao framework"""
     ret_labirinto = LabirintiteGame(LARGURA_TELA, ALTURA_TELA, TITULO_TELA)
@@ -556,40 +576,9 @@ def construtor():
     ret_labirinto.on_draw()
     return ret_labirinto
 
-
 if __name__ == "__main__":
     main()
-
 
 def getCampoDeVisao():
     print("Nao implementado.")
     return None
-
-class captura_entrada(arcade.Window):
-    """Metodo chamado quando qualquer tecla é pressionada. """
-    def on_key_press(self, tecla, modifiers):
-
-        direcao_pressiona = ''
-
-        if tecla == arcade.key.UP or tecla == arcade.key.W:
-            #self.jogador.change_y = VELOCIDADE_MOVIMENTO
-            #self.jogador.set_texture(1)
-            self.direcao_precionada = 'CIMA'
-
-        elif tecla == arcade.key.DOWN or tecla == arcade.key.S:
-            #self.jogador.change_y = -(VELOCIDADE_MOVIMENTO)
-            #self.jogador.set_texture(2)
-            self.direcao_precionada = 'BAIXO'
-
-        elif tecla == arcade.key.LEFT or tecla == arcade.key.D:
-            #self.jogador.change_x = -(VELOCIDADE_MOVIMENTO)
-            #self.jogador.set_texture(3)
-            self.direcao_precionada = 'ESQUERDA'
-
-        elif tecla == arcade.key.RIGHT or tecla == arcade.key.A:
-            #self.jogador.change_x = VELOCIDADE_MOVIMENTO
-            #self.jogador.set_texture(4)
-            self.direcao_precionada = 'DIREITA'
-
-        #arcade.
-        return direcao_pressiona

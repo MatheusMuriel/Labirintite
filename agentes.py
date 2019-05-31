@@ -1,8 +1,6 @@
 # Código com definição de agentes abstratos a serem utilizados em nossas aulas.
 
 from abc import ABC, abstractmethod
-from Labirintite import captura_entrada
-
 
 
 class Agente(ABC):
@@ -69,9 +67,19 @@ class AgenteHumano(Agente):
         # Receba entrada humana apenas neste momento, seja com prompt (terminal)
         # ou polling (jogos interativos).
 
-        dir = input("Proxima direção? ")
-        print("Direção escolhida foi: ", dir)
-        return dir
+        direcao = input("Proxima direção? ")
+
+        if direcao.upper() == 'W':
+            direcao = 'CIMA'
+        elif (direcao.upper() == 'S'):
+            direcao = 'BAIXO'
+        elif direcao.upper() == 'A':
+            direcao = 'ESQUERDA'
+        elif direcao.upper() == 'D':
+            direcao = 'DIREITA'
+
+        print("Direção escolhida foi: ", direcao)
+        return direcao
 
 class AgenteRobo(Agente):
     sequencia = 0
