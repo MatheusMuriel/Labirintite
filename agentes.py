@@ -60,23 +60,26 @@ class AgenteHumano(Agente):
         # de saída para interface humana.
 
         jogo.jogavel.on_draw()
-        
-        print("Admire a tela")
+        return
     
     def escolherProximaAcao(self, jogo):
         # Receba entrada humana apenas neste momento, seja com prompt (terminal)
         # ou polling (jogos interativos).
 
         direcao = input("Proxima direção? ")
+        direcao = direcao.upper()
 
-        if direcao.upper() == 'W':
+        if direcao == 'W' or direcao == 'CIMA':
             direcao = 'CIMA'
-        elif (direcao.upper() == 'S'):
+        elif direcao == 'S' or direcao == 'BAIXO':
             direcao = 'BAIXO'
-        elif direcao.upper() == 'A':
+        elif direcao == 'A' or direcao == 'ESQUERDA':
             direcao = 'ESQUERDA'
-        elif direcao.upper() == 'D':
+        elif direcao == 'D' or direcao == 'DIREITA':
             direcao = 'DIREITA'
+        else:
+            print("Direção invalida.")
+            return 'invalid'
 
         print("Direção escolhida foi: ", direcao)
         return direcao

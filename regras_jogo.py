@@ -53,7 +53,7 @@ class Labirinto(RegrasJogo):
     def __init__(self):
         self.jogavel = None #É um objeto LabirintiteGame
         self.jogador = None
-        #Lista com [jogador, direção]
+        #Lista no formato [jogador, direção]
         self.historico_estados = []
     
     def registrarAgenteJogador(self, elemAgente):
@@ -90,34 +90,36 @@ class Labirinto(RegrasJogo):
         else:
             raise print("Não foi possivel gerar o campo de visão, tipo de agente desconhecido.")
 
-        return jogo_view
+        return
 
     def registrarProximaAcao(self, id_jogador, acao):
         """ Informa ao jogo qual a ação de um jogador especificamente.
         Neste momento, o jogo ainda não é transformado em seu próximo estado,
         isso é feito no método de atualização do mundo.
         """
-        registro_acao = [id_jogador, acao]
+        # False significa que ainda nao foi passada para o jogo
+        registro_acao = [id_jogador, acao, False]
         self.historico_estados.append(registro_acao)
-        print("Registrado", registro_acao)
+
         return
     
     def atualizarEstado(self, diferencial_tempo):
         """ Apenas neste momento o jogo é atualizado para seu próximo estado
         de acordo com as ações de cada jogador registradas anteriormente.
         """
-        #Objeto que contém [Jogador, Movimento]
+        #Objeto que contém [Jogador, Movimento, ifExecutada]
         ultima_acao = self.historico_estados[ len(self.historico_estados) - 1 ]
 
-        #Passa somente a direção
-        self.jogavel.atualiza_estado( ultima_acao[1], diferencial_tempo )
-
+        #Executa caso ainda nao tenha sido executada
+        if (ultima_acao[2] == False):
+            self.jogavel.atualiza_estado( ultima_acao[1], diferencial_tempo )
+            ultima_acao[2] = True
+            self.historico_estados.pop()
+            self.historico_estados.append(ultima_acao)
         return
-    
+        
     def iniciaJogo(self):
-        #Decidir qual metodo vai usar
         jogavel = Labirintite.construtor()
-        #jogavel = Labirintite.main()
         self.jogavel = jogavel
 
 def construir_jogo(*args,**kwargs):
