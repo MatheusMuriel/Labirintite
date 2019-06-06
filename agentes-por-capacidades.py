@@ -62,6 +62,7 @@ class AgenteComModelo(Agente):
 
 
 class AgenteComObjetivo(Agente):
+    
     def __init__(self):
         # Uma sequencia de acoes, inicialmente vazia
         self.seq = []
@@ -71,7 +72,7 @@ class AgenteComObjetivo(Agente):
     def escolherProximaAcao(self):
         # Se seq estiver vazia
         if not self.seq:
-            self.formularProblema()
+            self.formularEstadoAtual()
             self.busca()
             if not self.seq:
                 return None

@@ -8,13 +8,29 @@ def ler_tempo(em_turnos=False):
     """
     return 1 if em_turnos else time.time()
 
+tipos_agentes = ['Agente_Humano',
+                'Agente_Amplitude',
+                'Agente_Profundidade',
+                'Agente_Aprofundamento_Iterativo']
+def ler_tipo_agente():
+    print("Escolha um dos tipos de agente: ")
+    for i in range(0,len(tipos_agentes)):
+        print("{}. {}.".format(i, tipos_agentes[i]))
+
+    input_tipo_agente = int(input("Codigo: "))
+
+    return tipos_agentes[input_tipo_agente]
 
 def iniciar_jogo():
     
         # Inicializar e configurar jogo
         jogo = construir_jogo()
 
-        jogador = construir_agente('HUMANO')
+        # Escolher o agente
+        tipo_agente = ler_tipo_agente()
+        print("Vc escolheu o", tipo_agente)
+
+        jogador = construir_agente(tipo_agente.upper())
         id_jogador = jogo.registrarAgenteJogador(jogador)
 
         tempo_de_jogo = 0
