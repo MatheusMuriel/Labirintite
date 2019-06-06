@@ -22,8 +22,6 @@ class Agente(ABC):
         '''
         return
 
-# Implemente seu jogador humano nessa classe, sobrescrevendo os métodos
-# abstratos de Agente. Em construir_agente, retorne uma instância dessa classe.
 class AgenteHumano(Agente):
 
     sequencia = 0
@@ -134,15 +132,55 @@ class AgenteAmplitude(Agente):
     implementando a classe `AgenteAmplitude` para seu jogo.
     """
 
-    pass
+    #@abstractmethod
+    def adquirirPercepcao(self, percepcao_mundo):
+        ''' Forma uma percepcao interna por meio de seus sensores, a partir das
+        informacoes de um objeto de visao de mundo.
+        '''
+        return
+    
+    #@abstractmethod
+    def escolherProximaAcao(self):
+        ''' Escolhe proxima acao, com base em seu entendimento do mundo, a partir
+        das percepções anteriores.
+        '''
+        return
+    
 
 class AgenteProfundidade(Agente):
-    #raise("AgenteProfundidade ainda não implementado.")
-    pass
+    
+    
+    #@abstractmethod
+    def adquirirPercepcao(self, percepcao_mundo):
+        ''' Forma uma percepcao interna por meio de seus sensores, a partir das
+        informacoes de um objeto de visao de mundo.
+        '''
+        return
+    
+    #@abstractmethod
+    def escolherProximaAcao(self):
+        ''' Escolhe proxima acao, com base em seu entendimento do mundo, a partir
+        das percepções anteriores.
+        '''
+        return
+    
 
 class AgenteAprofundamentoIterativo(Agente):
-    #raise("AgenteAprofundamentoIterativo ainda não implementado.") 
-    pass
+
+    #@abstractmethod
+    def adquirirPercepcao(self, percepcao_mundo):
+        ''' Forma uma percepcao interna por meio de seus sensores, a partir das
+        informacoes de um objeto de visao de mundo.
+        '''
+        return
+    
+    #@abstractmethod
+    def escolherProximaAcao(self):
+        ''' Escolhe proxima acao, com base em seu entendimento do mundo, a partir
+        das percepções anteriores.
+        '''
+        return
+    
 
 
 def construir_agente(tipo_agente):
@@ -154,13 +192,13 @@ def construir_agente(tipo_agente):
         agente = AgenteHumano()
 
     elif tipo_agente == 'AGENTE_AMPLITUDE':
-        print("Construir AGENTE_AMPLITUDE ainda não implementado.")
+        agente = AgenteAmplitude
 
     elif tipo_agente == 'AGENTE_PROFUNDIDADE':
-        print("Construir AGENTE_PROFUNDIDADE ainda não implementado.")
+        agente = AgenteProfundidade
 
     elif tipo_agente == 'AGENTE_APROFUNDAMENTO_ITERATIVO':
-        print("Construir AGENTE_APROFUNDAMENTO_ITERATIVO ainda não implementado.")
+        agente = AgenteAprofundamentoIterativo
 
     else:
         raise print("Tipo de agente desconhecido. Por favor escolha HUMANO ou ROBO.")
