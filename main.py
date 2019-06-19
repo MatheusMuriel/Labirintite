@@ -27,11 +27,12 @@ def iniciar_jogo():
         jogo = construir_jogo()
 
         # Escolher o agente
-        tipo_agente = ler_tipo_agente()
-        print("Vc escolheu o", tipo_agente)
+        ###tipo_agente = ler_tipo_agente()
+        tipo_agente = 'Agente_Amplitude'
+        ###print("Vc escolheu o", tipo_agente)
 
         jogador = construir_agente(tipo_agente.upper())
-        id_jogador = jogo.registrarAgenteJogador(jogador)
+        #id_jogador = jogo.registrarAgenteJogador(jogador)
 
         tempo_de_jogo = 0
 
@@ -39,7 +40,6 @@ def iniciar_jogo():
 
         """Game loop principal."""
         while not jogo.isFim():
-
                 # Mostrar mundo ao jogador
                 ambiente_perceptivel = jogo.gerarCampoVisao()
                 jogador.adquirirPercepcao(ambiente_perceptivel, jogo)
