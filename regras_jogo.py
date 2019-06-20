@@ -65,6 +65,7 @@ class Labirinto(RegrasJogo):
         
         id_agente_registrado = elemAgente.get_id()
         self.jogador = elemAgente
+        elemAgente.jogo = self
 
         return id_agente_registrado
     

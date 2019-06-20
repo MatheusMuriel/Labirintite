@@ -44,8 +44,12 @@ def iniciar_jogo():
                 ambiente_perceptivel = jogo.gerarCampoVisao() #Matriz aqui
                 jogador.adquirirPercepcao(ambiente_perceptivel, jogo) #Gera estados aqui
 
+                input("Aperte enter para continuar.")
+                print(" ")
+
                 # Decidir jogada e apresentar ao jogo
-                acao = jogador.escolherProximaAcao(jogo, ambiente_perceptivel)
+                acao = jogador.escolherProximaAcao()
+                #print("Proxima ação: " + acao)
                 jogo.registrarProximaAcao(id_jogador, acao)
 
                 # Atualizar jogo

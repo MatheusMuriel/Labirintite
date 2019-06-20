@@ -2,6 +2,7 @@
 
 from abc import ABC, abstractmethod
 import espaco_estados
+import no_de_busca
 
 class Agente(ABC):
     '''
@@ -61,7 +62,7 @@ class AgenteHumano(Agente):
         jogo.jogavel.on_draw()
         return
     
-    def escolherProximaAcao(self, jogo):
+    def escolherProximaAcao(self):
         # Receba entrada humana apenas neste momento, seja com prompt (terminal)
         # ou polling (jogos interativos).
 
@@ -139,6 +140,8 @@ class AgenteAmplitude(Agente):
         self.seq = []
         # Um objetivo, inicialmente nulo
         self.objetivo = None
+
+        self.jogo = None
         self.estado = None
         self.tipo_agente = 'AGENTE_AMPLITUDE'
         self.__class__.sequencia += 1
@@ -154,26 +157,56 @@ class AgenteAmplitude(Agente):
             self.busca()
             if not self.seq:
                 return None
-        acao = self.seq.pop(0)
-        return acao
+        acao = self.seq.pop(0) #Primeiro item da lista
+
+        print("Transição escolhida: ", acao)
+        self.estado.estadoAtual = acao.getDestino()
+
+        return acao.getDirecao()
     
-    def formularEstadoAtual(self, jogavel):
+    def formularEstadoAtual(self):
         ''' Instancia objeto com base em AbstractEstado representando o estado
         atual e as corretas funções de navegação pelo estado, bem como o teste
         de objetivo e a função de custo.
         
         Ao final, self.estado deve estar preenchido.
         '''
-        #self.estado = espaco_estados.EstadosLabirintite.estado_atual(jogavel)
-
-        pass
+        self.objetivo = self.jogo.objetivo
+        self.estado.todos_estados(self.jogo.jogavel.labirinto)
+        self.estado.estados_adjacentes()
     
     def busca(self):
         ''' Monta uma nova sequencia de acoes para resolver o problema atual.
         
             Ao final, self.seq deve conter uma lista de acoes.
         '''
-        pass
+        if self.estado.estadoAtual == None:
+            for e in self.estado.todosEstadosPossiveis:
+                if e.getCodigo() == 'B1':
+                    self.estado.estadoAtual = e
+                    break
+        
+        ea = self.estado.estadoAtual
+        estados = ea.estadosAdjacentes
+
+        #for e in estados:
+        #    t = espaco_estados.EstadosLabirintite.transicao(ea, e)
+        #    self.seq.append(t)
+
+        borda = [ no_de_busca.construir_no_raiz(ea) ]
+        visitados = set()
+        while borda:
+            folha = borda.pop()
+            if folha.estado.isObjetivo:
+                lista_transicoes = folha.criarListaDeAcoes()
+                self.seq = lista_transicoes
+                return 
+            else:
+                visitados.add(folha.estado)
+                for estadoAdjacente in folha.estado.estadosAdjacentes:
+                    expandido = no_de_busca.construir_no_filho(folha, estadoAdjacente)
+                    if expandido.estado not in visitados:
+                        borda.insert(0, expandido)
 
     #@abstractmethod
     def adquirirPercepcao(self, ambiente_perceptivel, jogo):
@@ -183,9 +216,13 @@ class AgenteAmplitude(Agente):
         #Diferente de um humano, o robo não olha a tela
         #Ele deve analisar a matriz e gerar o espaço de estados
 
-        objetivo = jogo.objetivo
-        novo_espaco_estados = espaco_estados.EstadosLabirintite(objetivo)
-        jogo.espaco_estados = novo_espaco_estados
+        #objetivo = jogo.objetivo
+        self.objetivo = jogo.objetivo
+        #novo_espaco_estados = espaco_estados.EstadosLabirintite(objetivo)
+        #jogo.espaco_estados = novo_espaco_estados
+        self.estado = espaco_estados.EstadosLabirintite()
+        self.estado.todos_estados(self.jogo.jogavel.labirinto)
+
 
         """
         Mostra a Tela para os humanos ultrapassados
@@ -193,15 +230,18 @@ class AgenteAmplitude(Agente):
         """
         jogo.jogavel.on_draw()
         return
-    
+
     #@abstractmethod
-    def escolherProximaAcao(self, jogo, ambiente_perceptivel):
+    def escolherProximaAcao_old(self, jogo):
         ''' Escolhe proxima acao, com base em seu entendimento do mundo, a partir
         das percepções anteriores.
         '''
-        estados = jogo.espaco_estados.todos_estados(ambiente_perceptivel)
-        jogo.espaco_estados.todosEstadosPossiveis(estados)
+        #estados = jogo.espaco_estados.todos_estados(ambiente_perceptivel)
+        #jogo.espaco_estados.todosEstadosPossiveis = estados
+        #jogo.espaco_estados.estados_adjacentes()
 
+    
+        print("Implemente escolher ação busca amplitude")
         """Coisa de humano"""
         direcao = input("Proxima direção? ")
         direcao = direcao.upper()
@@ -220,8 +260,7 @@ class AgenteAmplitude(Agente):
 
         print("Direção escolhida foi: ", direcao)
         return direcao
-        #return None
-    
+        #return None 
 
 class AgenteProfundidade(Agente):
     
