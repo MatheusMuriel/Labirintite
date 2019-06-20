@@ -32,7 +32,7 @@ def iniciar_jogo():
         ###print("Vc escolheu o", tipo_agente)
 
         jogador = construir_agente(tipo_agente.upper())
-        id_jogador = jogo.registrarAgenteJogador(jogador)
+        #id_jogador = jogo.registrarAgenteJogador(jogador)
 
         tempo_de_jogo = 0
 
@@ -41,8 +41,8 @@ def iniciar_jogo():
         """Game loop principal."""
         while not jogo.isFim():
                 # Mostrar mundo ao jogador
-                ambiente_perceptivel = jogo.gerarCampoVisao() #Matriz aqui
-                jogador.adquirirPercepcao(ambiente_perceptivel, jogo) #Gera estados aqui
+                ambiente_perceptivel = jogo.gerarCampoVisao() #Gera espaço de estados aqui?
+                jogador.adquirirPercepcao(ambiente_perceptivel, jogo) 
 
                 # Decidir jogada e apresentar ao jogo
                 acao = jogador.escolherProximaAcao(jogo)
@@ -53,5 +53,5 @@ def iniciar_jogo():
                 jogo.atualizarEstado(tempo_corrente - tempo_de_jogo)
                 tempo_de_jogo += tempo_corrente
         
-if __name__ == '__main__':
+if __name__ == '__mainTeste__':
     iniciar_jogo()

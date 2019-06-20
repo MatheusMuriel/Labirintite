@@ -89,8 +89,9 @@ class estado_teste():
         letra = self.CodigoObjeto[0]
         numero = self.CodigoObjeto[1]
 
+        nLetra = converteLetra(letra)
         #Bater com a matriz do mapa 
-        pontoNoMapa = mapa_matriz[]
+        pontoNoMapa = mapa_matriz[nLetra-1, numero-1]
         pass
 
     def converteLetra(letra):
@@ -102,6 +103,7 @@ class estado_teste():
                 return numeroSaida
             else:
                 numeroSaida += 1
+
         raise "Letra invalida"
 
     def definirEstado(self, CodigoObjeto, isParede, EstadoAtual, Transicao):

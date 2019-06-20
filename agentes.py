@@ -57,6 +57,7 @@ class AgenteHumano(Agente):
         # tocar sons, dispositivos hápticos, etc, todo e qualquer dispositivo
         # de saída para interface humana.
 
+        #No caso de um humano ele deve olhar a tela
         jogo.jogavel.on_draw()
         return
     
@@ -139,6 +140,7 @@ class AgenteAmplitude(Agente):
         # Um objetivo, inicialmente nulo
         self.objetivo = None
         self.estado = None
+        self.tipo_agente = 'AGENTE_AMPLITUDE'
         self.__class__.sequencia += 1
         self.id = self.__class__.sequencia
 
@@ -174,10 +176,21 @@ class AgenteAmplitude(Agente):
         pass
 
     #@abstractmethod
-    def adquirirPercepcao(self, percepcao_mundo):
+    def adquirirPercepcao(self, ambiente_perceptivel, jogo):
         ''' Forma uma percepcao interna por meio de seus sensores, a partir das
         informacoes de um objeto de visao de mundo.
+
+        Pega espaço de estados
         '''
+        #Diferente de um humano, o robo não olha a tela
+        #Ele deve analisar a matriz e gerar o espaço de estados
+
+        objetivo = jogo.objetivo
+        novo_espaco_estados = espaco_estados.EstadosLabirintite()
+        
+        jogo.espaco_estados = novo_espaco_estados
+        
+
         return
     
     #@abstractmethod
@@ -207,11 +220,21 @@ class AgenteProfundidade(Agente):
 
 class AgenteAprofundamentoIterativo(Agente):
 
-    #@abstractmethod
-    def adquirirPercepcao(self, percepcao_mundo):
+    def adquirirPercepcao(ambiente_perceptivel, jogo):
         ''' Forma uma percepcao interna por meio de seus sensores, a partir das
         informacoes de um objeto de visao de mundo.
+
+        Pega espaço de estados
         '''
+        #Diferente de um humano, o robo não olha a tela
+        #Ele deve analisar a matriz e gerar o espaço de estados
+
+        objetivo = jogo.objetivo
+        novo_espaco_estados = espaco_estados.EstadosLabirintite()
+        
+        jogo.espaco_estados = novo_espaco_estados
+        
+
         return
     
     #@abstractmethod
@@ -230,13 +253,13 @@ def construir_agente(tipo_agente):
         agente = AgenteHumano()
 
     elif tipo_agente == 'AGENTE_AMPLITUDE':
-        agente = AgenteAmplitude
+        agente = AgenteAmplitude()
 
     elif tipo_agente == 'AGENTE_PROFUNDIDADE':
-        agente = AgenteProfundidade
+        agente = AgenteProfundidade()
 
     elif tipo_agente == 'AGENTE_APROFUNDAMENTO_ITERATIVO':
-        agente = AgenteAprofundamentoIterativo
+        agente = AgenteAprofundamentoIterativo()
 
     else:
         raise print("Tipo de agente desconhecido. Por favor escolha HUMANO ou ROBO.")

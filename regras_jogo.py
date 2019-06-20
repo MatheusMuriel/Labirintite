@@ -53,6 +53,8 @@ class Labirinto(RegrasJogo):
     def __init__(self):
         self.jogavel = None #É um objeto LabirintiteGame
         self.jogador = None
+        self.espaco_estados = None
+        self.objetivo = None
         #Lista no formato [jogador, direção]
         self.historico_estados = []
     
@@ -88,7 +90,8 @@ class Labirinto(RegrasJogo):
         elif tipo_jogador == 'ROBO':
             return self.jogavel.labirinto
         else:
-            raise print("Não foi possivel gerar o campo de visão, tipo de agente desconhecido.")
+            return self.jogavel.labirinto
+            #raise print("Não foi possivel gerar o campo de visão, tipo de agente desconhecido.")
 
         return
 
@@ -121,6 +124,7 @@ class Labirinto(RegrasJogo):
     def iniciaJogo(self):
         jogavel = Labirintite.construtor()
         self.jogavel = jogavel
+        self.objetivo = jogavel.saida
 
 def construir_jogo(*args,**kwargs):
     """ Método factory para uma instância Jogavel arbitrária, de acordo com os

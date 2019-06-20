@@ -159,6 +159,7 @@ class LabirintiteGame(arcade.Window):
         self.jogador_objeto = None
         self.parede_list = None
         self.saida_list = None
+        self.saida = None
         self.chao_list = None
         self.jogador_x = None
         self.jogador_y = None
@@ -181,6 +182,7 @@ class LabirintiteGame(arcade.Window):
         self.chao_list = arcade.SpriteList()
         self.score = 0
         self.total_time = 0.0
+        self.saida = None
 
         # Cria o labirinto
         self.labirinto = criaLabirinto(ALTURA_LABIRINTO, ALTURA_LABIRINTO)
@@ -199,6 +201,7 @@ class LabirintiteGame(arcade.Window):
                 SAIDA_X = bit.center_x
                 global SAIDA_Y
                 SAIDA_Y = bit.center_y
+                self.saida = [linha,coluna] # "LETRA" , NUMERO
 
         # Define os Sprites com base no grid
         # Usa tecnica de Tilemap
