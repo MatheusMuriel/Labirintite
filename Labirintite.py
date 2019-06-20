@@ -40,7 +40,7 @@ ASSET_CRUZAMENTO = "cenario/cruzamento.png"
 LARGURA_TELA = 500
 ALTURA_TELA = 500
 TITULO_TELA = "Labirintite"
-CAMPO_VISAO = 10
+CAMPO_VISAO = 150
 
 ## Outros ##
 # A velocidade de movimento é o tamnho do sprite
@@ -48,8 +48,8 @@ CAMPO_VISAO = 10
 VELOCIDADE_MOVIMENTO = TAMANHO_SPRITE
 
 # Deve ser um numero impar.
-ALTURA_LABIRINTO = 11
-LARGURA_LABIRINTO = 11
+ALTURA_LABIRINTO = 21
+LARGURA_LABIRINTO = 21
 
 # Tiles do mapa do jogo
 TILE_CHAO = 0

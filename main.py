@@ -28,7 +28,7 @@ def iniciar_jogo():
 
         # Escolher o agente
         ###tipo_agente = ler_tipo_agente()
-        tipo_agente = 'Agente_Amplitude'
+        tipo_agente = 'Agente_Profundidade'
         ###print("Vc escolheu o", tipo_agente)
 
         jogador = construir_agente(tipo_agente.upper())
@@ -44,7 +44,8 @@ def iniciar_jogo():
                 ambiente_perceptivel = jogo.gerarCampoVisao() #Matriz aqui
                 jogador.adquirirPercepcao(ambiente_perceptivel, jogo) #Gera estados aqui
 
-                input("Aperte enter para continuar.")
+                time.sleep(0.5)
+                #input("Aperte enter para continuar.")
                 print(" ")
 
                 # Decidir jogada e apresentar ao jogo
