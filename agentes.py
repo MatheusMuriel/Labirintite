@@ -179,26 +179,48 @@ class AgenteAmplitude(Agente):
     def adquirirPercepcao(self, ambiente_perceptivel, jogo):
         ''' Forma uma percepcao interna por meio de seus sensores, a partir das
         informacoes de um objeto de visao de mundo.
-
-        Pega espaço de estados
         '''
         #Diferente de um humano, o robo não olha a tela
         #Ele deve analisar a matriz e gerar o espaço de estados
 
         objetivo = jogo.objetivo
-        novo_espaco_estados = espaco_estados.EstadosLabirintite()
-        
+        novo_espaco_estados = espaco_estados.EstadosLabirintite(objetivo)
         jogo.espaco_estados = novo_espaco_estados
-        
 
+        """
+        Mostra a Tela para os humanos ultrapassados
+        conseguirem acompanhar as maquinas
+        """
+        jogo.jogavel.on_draw()
         return
     
     #@abstractmethod
-    def escolherProximaAcao(self):
+    def escolherProximaAcao(self, jogo, ambiente_perceptivel):
         ''' Escolhe proxima acao, com base em seu entendimento do mundo, a partir
         das percepções anteriores.
         '''
-        return
+        estados = jogo.espaco_estados.todos_estados(ambiente_perceptivel)
+        jogo.espaco_estados.todosEstadosPossiveis(estados)
+
+        """Coisa de humano"""
+        direcao = input("Proxima direção? ")
+        direcao = direcao.upper()
+
+        if direcao == 'W' or direcao == 'CIMA':
+            direcao = 'CIMA'
+        elif direcao == 'S' or direcao == 'BAIXO':
+            direcao = 'BAIXO'
+        elif direcao == 'A' or direcao == 'ESQUERDA':
+            direcao = 'ESQUERDA'
+        elif direcao == 'D' or direcao == 'DIREITA':
+            direcao = 'DIREITA'
+        else:
+            print("Direção invalida.")
+            return 'invalid'
+
+        print("Direção escolhida foi: ", direcao)
+        return direcao
+        #return None
     
 
 class AgenteProfundidade(Agente):
@@ -238,11 +260,11 @@ class AgenteAprofundamentoIterativo(Agente):
         return
     
     #@abstractmethod
-    def escolherProximaAcao(self):
+    def escolherProximaAcao(self, jogo):
         ''' Escolhe proxima acao, com base em seu entendimento do mundo, a partir
         das percepções anteriores.
         '''
-        return
+        return 'Nha'
     
 def construir_agente(tipo_agente):
     """ Método factory para uma instância Agente arbitrária, de acordo com os

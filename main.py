@@ -45,7 +45,7 @@ def iniciar_jogo():
                 jogador.adquirirPercepcao(ambiente_perceptivel, jogo) #Gera estados aqui
 
                 # Decidir jogada e apresentar ao jogo
-                acao = jogador.escolherProximaAcao(jogo)
+                acao = jogador.escolherProximaAcao(jogo, ambiente_perceptivel)
                 jogo.registrarProximaAcao(id_jogador, acao)
 
                 # Atualizar jogo
