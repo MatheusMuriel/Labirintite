@@ -304,31 +304,95 @@ class AgenteProfundidade(Agente):
         return
 
 class AgenteAprofundamentoIterativo(Agente):
+    sequencia = 0
+    def __init__(self):
+        # Uma sequencia de acoes, inicialmente vazia
+        self.seq = []
+        # Um objetivo, inicialmente nulo
+        self.objetivo = None
 
-    def adquirirPercepcao(ambiente_perceptivel, jogo):
+        self.jogo = None
+        self.estado = None
+        self.tipo_agente = 'AGENTE_APROFUNDAMENTO_ITERATIVO'
+        self.__class__.sequencia += 1
+        self.id = self.__class__.sequencia
+
+    def get_id(self):
+        return self.id
+
+    def escolherProximaAcao(self):
+        # Se seq estiver vazia
+        if not self.seq:
+            self.formularEstadoAtual()
+            self.busca()
+            if not self.seq:
+                return None
+        acao = self.seq.pop(0) #Primeiro item da lista
+
+        print("Transição escolhida: ", acao)
+        self.estado.estadoAtual = acao.getDestino()
+
+        return acao.getDirecao()
+    
+    def formularEstadoAtual(self):
+        ''' Instancia objeto com base em AbstractEstado representando o estado
+        atual e as corretas funções de navegação pelo estado, bem como o teste
+        de objetivo e a função de custo.
+        
+        Ao final, self.estado deve estar preenchido.
+        '''
+        self.objetivo = self.jogo.objetivo
+        self.estado.todos_estados(self.jogo.jogavel.labirinto)
+        self.estado.estados_adjacentes()
+    
+    def busca(self):
+        ''' Monta uma nova sequencia de acoes para resolver o problema atual.
+        
+            Ao final, self.seq deve conter uma lista de acoes.
+        '''
+        if self.estado.estadoAtual == None:
+            for e in self.estado.todosEstadosPossiveis:
+                if e.getCodigo() == 'B1':
+                    self.estado.estadoAtual = e
+                    break
+
+        borda = [ no_de_busca.construir_no_raiz(self.estado.estadoAtual) ]
+        visitados = set()
+        limite = 0
+        while borda:
+            folha = borda.pop()
+            if folha.estado.isObjetivo:
+                lista_transicoes = folha.criarListaDeAcoes()
+                self.seq = lista_transicoes
+                return 
+            
+            else:
+                limite += 1
+                visitados.add(folha.estado)
+                for estadoAdjacente in folha.estado.estadosAdjacentes:
+                    expandido = no_de_busca.construir_no_filho(folha, estadoAdjacente)
+                    if expandido.estado not in visitados and expandido.calcularAltura() <= limite:
+                        borda.insert(0,expandido)
+                    elif expandido.calcularAltura() > limite:
+                        borda.append(expandido)
+
+    def adquirirPercepcao(self, ambiente_perceptivel, jogo):
         ''' Forma uma percepcao interna por meio de seus sensores, a partir das
         informacoes de um objeto de visao de mundo.
-
-        Pega espaço de estados
         '''
         #Diferente de um humano, o robo não olha a tela
         #Ele deve analisar a matriz e gerar o espaço de estados
 
-        objetivo = jogo.objetivo
-        novo_espaco_estados = espaco_estados.EstadosLabirintite()
-        
-        jogo.espaco_estados = novo_espaco_estados
-        
-
+        self.objetivo = jogo.objetivo
+        self.estado = espaco_estados.EstadosLabirintite()
+        self.estado.todos_estados(self.jogo.jogavel.labirinto)
+        """
+        Mostra a Tela para os humanos ultrapassados
+        conseguirem acompanhar as maquinas
+        """
+        jogo.jogavel.on_draw()
         return
-    
-    #@abstractmethod
-    def escolherProximaAcao(self, jogo):
-        ''' Escolhe proxima acao, com base em seu entendimento do mundo, a partir
-        das percepções anteriores.
-        '''
-        return 'Nha'
-    
+
 def construir_agente(tipo_agente):
     """ Método factory para uma instância Agente arbitrária, de acordo com os
     paraâmetros. Pode-se mudar à vontade a assinatura do método.
