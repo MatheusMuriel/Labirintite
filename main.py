@@ -11,7 +11,10 @@ def ler_tempo(em_turnos=False):
 tipos_agentes = ['Agente_Humano',
                 'Agente_Amplitude',
                 'Agente_Profundidade',
-                'Agente_Aprofundamento_Iterativo']
+                'Agente_Aprofundamento_Iterativo',
+                'Agente_Gulosa_Com_Retrocesso',
+                'Agente_A_Estrela',
+                ]
 def ler_tipo_agente():
     print("Escolha um dos tipos de agente: ")
     for i in range(0,len(tipos_agentes)):
@@ -28,7 +31,7 @@ def iniciar_jogo():
 
         # Escolher o agente
         ###tipo_agente = ler_tipo_agente()
-        tipo_agente = 'Agente_Profundidade'
+        tipo_agente = 'Agente_A_Estrela'
         ###print("Vc escolheu o", tipo_agente)
 
         jogador = construir_agente(tipo_agente.upper())

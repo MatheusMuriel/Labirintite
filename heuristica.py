@@ -5,7 +5,7 @@ class HeuristicaLabirinto():
 
     def __init__(self, origem, destino):
         self.h = None
-        self.g = None
+        self.g = 0
         self.valor = None
 
         """Objetos do tipo espaco_estados"""
@@ -21,16 +21,23 @@ class HeuristicaLabirinto():
         n = self.origem.getNumero()
         n_aux = self.destino.getNumero()
 
-        distancia_horizontal = n - n_aux if n > n_aux else n_aux - n
-        distancia_vertical = vx - vx_aux if vx > vx_aux else vx_aux - vx
+        distancia_horizontal = n - n_aux if n >= n_aux else n_aux - n
+        distancia_vertical = vx - vx_aux if vx >= vx_aux else vx_aux - vx
 
         valor_calculado = distancia_horizontal + distancia_vertical
 
-        self.valor = valor_calculado
+        self.h = valor_calculado
 
     def getValor(self):
         if self.valor == None:
             self.calculaHeuristica()
+            
+        return self.valor
+
+    def getValorH(self):
+        if self.valor == None:
+            self.calculaHeuristica()
+            
         return self.valor
 
     def is_admissivel(self):

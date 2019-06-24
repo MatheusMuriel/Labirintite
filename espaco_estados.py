@@ -1,6 +1,7 @@
 from abc import ABC
 import Labirintite
 import string
+from heuristica import HeuristicaLabirinto
 
 class AbstractEstado(ABC):
     def __init__(self, is_objetivo, custo_transicao=lambda s,a,st: 1):
@@ -39,10 +40,10 @@ class EstadosLabirintite(AbstractEstado):
         #Estado inicial é padrão
         self.estadoInicial = estado_teste('B',2)
         self.estadoAtual = None
+        self.estadoFinal = None
 
         #Lista de todos os estados possiveis
         self.todosEstadosPossiveis = []
-
 
     def acoesPossiveis(self):
         """ AbstractEstado -> (AbstractAcao)
@@ -80,6 +81,7 @@ class EstadosLabirintite(AbstractEstado):
                     lista_estados.append(estado_aux)
                 elif (bit == 99):
                     estado_saida = estado_teste(alfabeto[cod_letra], cod_num, True)
+                    self.estadoFinal = estado_saida
                     lista_estados.append(estado_saida)
                 cod_letra += 1
             cod_num += 1
@@ -107,7 +109,6 @@ class EstadosLabirintite(AbstractEstado):
 
         return transicao_teste(origem,d, destino)
 
-
     def estados_adjacentes(self):
         estados = self.todosEstadosPossiveis
 
@@ -129,7 +130,14 @@ class EstadosLabirintite(AbstractEstado):
 
                 if adjacente: e.estadosAdjacentes.append(e_aux)
 
+    def estados_heuristica(self):
+        estados = self.todosEstadosPossiveis
 
+        for e in estados:
+            h = HeuristicaLabirinto(e,self.estadoFinal)
+            h.getValorH()
+            e.heuristica = h
+        
 class estado_teste():
     #Modelagem para entender conceitos
     #Baseado na wiki do jogo
@@ -148,6 +156,8 @@ class estado_teste():
         self.Transicao = None
 
         self.estadosAdjacentes = []
+
+        self.heuristica = None
 
     def __repr__(self):
         return '<E = ({})>'.format(self.CodigoObjeto)
@@ -208,4 +218,3 @@ class transicao_teste():
 
     def getDestino(self):
         return self.destino
-    
