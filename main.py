@@ -30,9 +30,9 @@ def iniciar_jogo():
         jogo = construir_jogo()
 
         # Escolher o agente
-        ###tipo_agente = ler_tipo_agente()
-        tipo_agente = 'Agente_A_Estrela'
-        ###print("Vc escolheu o", tipo_agente)
+        tipo_agente = ler_tipo_agente()
+        #tipo_agente = 'Agente_A_Estrela'
+        print("Vc escolheu o", tipo_agente)
 
         jogador = construir_agente(tipo_agente.upper())
         id_jogador = jogo.registrarAgenteJogador(jogador)

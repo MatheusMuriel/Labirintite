@@ -38,7 +38,7 @@ class EstadosLabirintite(AbstractEstado):
         self.custoTransicao = custo_transicao
 
         #Estado inicial é padrão
-        self.estadoInicial = estado_teste('B',2)
+        self.estadoInicial = estado('B',2)
         self.estadoAtual = None
         self.estadoFinal = None
 
@@ -77,10 +77,10 @@ class EstadosLabirintite(AbstractEstado):
             for linha in coluna:
                 bit = matriz[cod_letra][cod_num]
                 if bit == 0:
-                    estado_aux = estado_teste(alfabeto[cod_letra], cod_num)
+                    estado_aux = estado(alfabeto[cod_letra], cod_num)
                     lista_estados.append(estado_aux)
                 elif (bit == 99):
-                    estado_saida = estado_teste(alfabeto[cod_letra], cod_num, True)
+                    estado_saida = estado(alfabeto[cod_letra], cod_num, True)
                     self.estadoFinal = estado_saida
                     lista_estados.append(estado_saida)
                 cod_letra += 1
@@ -107,7 +107,7 @@ class EstadosLabirintite(AbstractEstado):
                 #Para baixo
                 d = 'BAIXO'
 
-        return transicao_teste(origem,d, destino)
+        return transicao(origem,d, destino)
 
     def estados_adjacentes(self):
         estados = self.todosEstadosPossiveis
@@ -138,7 +138,7 @@ class EstadosLabirintite(AbstractEstado):
             h.getValorH()
             e.heuristica = h
         
-class estado_teste():
+class estado():
     #Modelagem para entender conceitos
     #Baseado na wiki do jogo
 
@@ -200,7 +200,7 @@ class estado_teste():
         self.EstadoAtual = EstadoAtual
         self.Transicao = Transicao
 
-class transicao_teste():
+class transicao():
 
     def __init__(self, estadoAtual, direcao, destino):
         self.estadoAtual = estadoAtual
